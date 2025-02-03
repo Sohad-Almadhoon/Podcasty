@@ -20,8 +20,8 @@ export default function AuthCallback() {
       }
 
       if (session) {
-        console.log("Authenticated session:", session.user.user_metadata.full_name);
-        router.push("/podcast")
+        saveUserToDatabase(session.user);
+        router.push("/podcasts");
       } else {
         router.push("/login");
       }
@@ -30,9 +30,10 @@ export default function AuthCallback() {
     handleAuth();
   }, [router]);
 
-  return <p>Signing you in...</p>;
+  return <div>Signing you in...</div>;
 }
 async function saveUserToDatabase(user: any) {
+  console.log(user);
   try {
     const res = await fetch("/api/users", {
       method: "POST",

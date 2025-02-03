@@ -1,32 +1,18 @@
-import  supabase  from "@/lib/supabase";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
+import supabase from "@/lib/supabase";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    if (req.method === "POST") {
-        const { id, email, username, avatar_url } = req.body;
+export async function POST(req: Request) {
+    try {
+        const body = await req.json();
+        const { email, username, avatar_url } = body;
+        const { error } = await supabase
+            .from("users")
+            .insert({  email, username, avatar_url });
 
-        try {
-            const { data, error } = await supabase
-                .from("users")
-                .upsert(
-                    {
-                        id,
-                        email,
-                        username,
-                        avatar_url,
-                    },
-                    { onConflict: "id" }
-                );
+        if (error) throw error;
 
-            if (error) {
-                throw new Error(error.message);
-            }
-
-            return res.status(200).json(data); 
-        } catch (error) {
-            return res.status(500).json({ error: (error as Error).message });
-        }
+        return NextResponse.json({ success: true }, { status: 200 });
+    } catch (error) {
+        return NextResponse.json({ error: (error as Error).message }, { status: 500 });
     }
-
-    return res.status(405).json({ error: "Method not allowed" });
 }
