@@ -1,58 +1,50 @@
 import openai from '@/lib/openai';
 import supabase from '@/lib/supabase';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
 
+export async function POST(req: NextRequest) {
+    const user = await supabase.auth.getUser();
+    const user_id = user.data.user?.id;
+    const { podcast_name, description } = await req.json();  // Ensure you're extracting the request body correctly
 
-export async function POST(req : NextApiRequest, res:NextApiResponse) {
-    if (req.method === 'POST') {
-        const { podcast_name, description } = req.body;
+    try {
+        // Generate Audio from OpenAI
+        const audioResponse = await openai.audio.speech.create({
+            model: "tts-1",
+            voice: "alloy",
+            input: description, // Use the actual description instead of static text
+        });
 
-        try {
-            const image = await openai.images.generate({
-                model: "dall-e-3",
-                prompt: description,
-                n: 1,
-                size: "1024x1024",
-            });
-            const audio = await openai.audio.speech.create({
-                model: "tts-1",
-                voice: "alloy",
-                input: "Today is a wonderful day to build something people love!",
-            });
-            const { data: audioData, error: audioError } = await supabase
-                .storage
-                .from('podcasts')
-                .upload(`audio/${Date.now()}.mp3`, Buffer.from(audio), {
-                    contentType: 'audio/mpeg',
-                });
-
-            if (audioError) throw audioError;
-
-            const { data: imageData, error: imageError } = await supabase
-                .storage
-                .from('podcasts')
-                .upload(`images/${Date.now()}.jpg`, Buffer.from(image), {
-                    contentType: 'image/jpeg',
-                });
-
-            if (imageError) throw imageError;
-
-            // Get public URLs for the uploaded files
-            const audioUrl = supabase.storage.from('podcasts').getPublicUrl(audioData.path).data.publicUrl;
-            const imageUrl = supabase.storage.from('podcasts').getPublicUrl(imageData.path).data.publicUrl;
-
-            // Save podcast data in database
-            const { data: podcast, error: dbError } = await supabase
-                .from('podcasts')
-                .insert([{ podcast_name, description, audio_url: audioUrl, image_url: imageUrl }]);
-
-            if (dbError) throw dbError;
-
-            res.status(200).json({ message: 'Podcast uploaded successfully', podcast });
-        } catch (error) {
-            res.status(500).json({ error: (error as Error).message });
+        if (!audioResponse) {
+            throw new Error("Failed to generate audio");
         }
-    } else {
-        res.status(405).json({ error: 'Method not allowed' });
+
+        const audioBuffer = Buffer.from(await audioResponse.arrayBuffer());
+
+        // Upload Audio to Supabase Storage
+        const audioName = `audio/${Date.now()}.mp3`;  // Unique name for the audio file
+        const { data: audioData, error: audioError } = await supabase
+            .storage
+            .from('podcasts')  // Make sure this matches the name of your bucket
+            .upload(audioName, audioBuffer, {
+                contentType: 'audio/mpeg',  // Set the appropriate content type
+            });
+
+        if (audioError) throw audioError;
+
+        // Get public URL for the uploaded audio
+        const audioUrl = supabase.storage.from('podcasts').getPublicUrl(audioData.path).data.publicUrl;
+
+        // Return the public URL of the uploaded audio file
+        return new NextResponse(
+            JSON.stringify({ audioUrl }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+    } catch (error) {
+        return new NextResponse(
+            JSON.stringify({ message: error instanceof Error ? error.message : 'An unknown error occurred' }),
+            { status: 500, headers: { 'Content-Type': 'application/json' } }
+        );
     }
+
 }
