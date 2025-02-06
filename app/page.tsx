@@ -2,6 +2,7 @@
 import { signInWithGoogle } from "@/lib/auth";
 import supabase from "@/lib/supabase";
 import { useEffect } from "react";
+import PodcastForm from "./components/PodcastForm";
 
 export default function Home() {
   async function user() {
@@ -15,7 +16,6 @@ export default function Home() {
     <div>
       <h1>Welcome to Our Website!</h1>
      
-
       {/* <button onClick={signInWithGoogle}>Sign in with Google</button> */}
     </div>
   );

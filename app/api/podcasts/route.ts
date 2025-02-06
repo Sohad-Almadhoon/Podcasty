@@ -5,44 +5,48 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
     const user = await supabase.auth.getUser();
     const user_id = user.data.user?.id;
-    const { podcast_name, description } = await req.json();  // Ensure you're extracting the request body correctly
+    const { podcast_name, description } = await req.json();  
 
     try {
-        // Generate Audio from OpenAI
+        // Generate Image 
+        const imageResponse = await openai.images.generate(
+            {
+                model: 'dall-e-3',
+                prompt: description,
+                n: 1,
+            }
+        );
+        const imageUrl = imageResponse.data[0].url;
+        //Generate Audio
         const audioResponse = await openai.audio.speech.create({
             model: "tts-1",
-            voice: "alloy",
-            input: description, // Use the actual description instead of static text
+            voice: "shimmer",
+            input: description,
         });
-
-        if (!audioResponse) {
-            throw new Error("Failed to generate audio");
-        }
 
         const audioBuffer = Buffer.from(await audioResponse.arrayBuffer());
 
         // Upload Audio to Supabase Storage
-        const audioName = `audio/${Date.now()}.mp3`;  // Unique name for the audio file
+        const audioName = `audio/${Date.now()}.mp3`;
         const { data: audioData, error: audioError } = await supabase
             .storage
-            .from('podcasts')  // Make sure this matches the name of your bucket
+            .from('podcasts')
             .upload(audioName, audioBuffer, {
-                contentType: 'audio/mpeg',  // Set the appropriate content type
+                contentType: 'audio/mpeg',
             });
 
-        if (audioError) throw audioError;
+        if (audioError) throw new Error('Failed To Upload audio to Supabase!');
 
-        // Get public URL for the uploaded audio
         const audioUrl = supabase.storage.from('podcasts').getPublicUrl(audioData.path).data.publicUrl;
 
-        // Return the public URL of the uploaded audio file
+
         return new NextResponse(
-            JSON.stringify({ audioUrl }),
+            JSON.stringify({ audioUrl, imageUrl }),
             { status: 200, headers: { 'Content-Type': 'application/json' } }
         );
     } catch (error) {
         return new NextResponse(
-            JSON.stringify({ message: error instanceof Error ? error.message : 'An unknown error occurred' }),
+            JSON.stringify({ message: error } ),
             { status: 500, headers: { 'Content-Type': 'application/json' } }
         );
     }
