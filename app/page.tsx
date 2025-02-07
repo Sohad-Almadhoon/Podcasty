@@ -28,7 +28,7 @@ export default function Home() {
         <h2 className="text-3xl font-semibold text-[#EDEDED]">
           About Podcasty
         </h2>
-        <p className="mt-4 text-[#EDEDED] max-w-2xl mx-auto">
+        <p className="mt-4 text-[#EDEDED] max-w-2xl mx-auto text-sm">
           At AI Podcast, we believe in the power of technology to make content
           creation more accessible and engaging. Our platform allows you to
           input text, generate AI-driven narration, and store your podcast
@@ -37,7 +37,7 @@ export default function Home() {
           create professional-grade podcasts in minutes. Join us in redefining
           the future of podcasting with AI-driven innovation!
         </p>
-        <div className="mt-6 grid grid-cols-3 gap-7">
+        <div className="mt-10 grid grid-cols-3 gap-8">
           <img
             src="/images/1.svg"
             alt="Podcast concept illustration"
@@ -56,7 +56,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-12 text-center">
+      <section className="mt-16 text-center">
         <h2 className="text-3xl font-semibold text-[#EDEDED]">
           Let's Get Started
         </h2>
