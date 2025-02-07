@@ -8,13 +8,17 @@ export default function Home() {
             Welcome to Podcasty!
           </h1>
           <p className="mt-4 text-[#EDEDED] max-w-lg">
-            Discover, create, and share amazing podcasts. Upload your audio,
-            generate voice content, and grow your audience with ease.
+            AI Podcast is your gateway to seamless, AI-generated storytelling.
+            Our platform leverages cutting-edge artificial intelligence to
+            transform text into immersive audio experiences. Whether you're a
+            content creator, educator, or entrepreneur, AI Podcast empowers you
+            to bring your ideas to life with high-quality, natural-sounding
+            voices.
           </p>
         </div>
         <div className="">
           <img
-            src="/images/test.png"
+            src="/images/3.svg"
             alt="Podcast illustration"
             className="shadow-lg h-[500px] rounded-full"
           />
@@ -25,26 +29,29 @@ export default function Home() {
           About Podcasty
         </h2>
         <p className="mt-4 text-[#EDEDED] max-w-2xl mx-auto">
-          Podcasty is a platform designed to help creators produce and share
-          their podcasts effortlessly. Whether you're an aspiring podcaster or
-          an experienced professional, our tools make it easy to create
-          high-quality audio content and connect with your audience.
+          At AI Podcast, we believe in the power of technology to make content
+          creation more accessible and engaging. Our platform allows you to
+          input text, generate AI-driven narration, and store your podcast
+          content effortlessly. With features like customizable voice options
+          and automated audio generation, AI Podcast is designed to help you
+          create professional-grade podcasts in minutes. Join us in redefining
+          the future of podcasting with AI-driven innovation!
         </p>
         <div className="mt-6 grid grid-cols-3 gap-7">
           <img
-            src="/images/test3.jpg"
+            src="/images/1.svg"
             alt="Podcast concept illustration"
-            className="mx-auto rounded-lg shadow-lg"
+            className="h-48"
           />
           <img
-            src="/images/test2.jpg"
+            src="/images/6.svg"
             alt="Podcast concept illustration"
-            className="mx-auto rounded-lg shadow-lg"
+            className="h-48"
           />
           <img
-            src="/images/test3.jpg"
+            src="/images/7.svg"
             alt="Podcast concept illustration"
-            className="mx-auto rounded-lg shadow-lg"
+            className="h-48"
           />
         </div>
       </section>
@@ -57,7 +64,7 @@ export default function Home() {
           Ready to share your voice with the world? Get started by creating your
           first podcast today!
         </p>
-        <button className="mt-6 px-6 py-3 bg-white text-purple-950 font-medium rounded-lg shadow-md hover:bg-purple-900 hover:text-white transition">
+        <button className="mt-6 px-6 py-3 bg-black text-white font-medium rounded-lg shadow-md hover:bg-purple-900 hover:text-white transition">
           Start Now
         </button>
       </section>

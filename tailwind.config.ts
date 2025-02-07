@@ -14,7 +14,11 @@ export default {
 			},
 			backgroundImage: {
 				'primary-img': "url('/images/test.png')",
-				
+
+			},
+			fontFamily: {
+				montserrat: ['Montserrat', 'sans-serif'],
+				dancingScript: ['Dancing Script', 'cursive'],
 			},
 		}
 	}

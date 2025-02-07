@@ -3,24 +3,30 @@ import React from "react";
 
 const Header = () => {
   return (
-    <div className="bg-white flex justify-between items-center text-black py-3 px-12">
+    <div className="bg-gradient-to-b flex-1 from-gray-800 to-purple-600 flex flex-col text-white py-3 px-12">
+      {/* Logo Section */}
       <Link href="/">
-        {" "}
-        <span className="text-2xl text-purple-900 italic font-bold">
-          Podcastyyy
-        </span>
+        <p className=" font-dancingScript text-5xl my-5">
+          {" "}
+          Podcasti
+          <span className="text-purple-600">f</span>y
+        </p>
       </Link>
 
-      <div className="flex items-center gap-5">
-        <Link href="/">
-          <img
-            src="/images/test.jpg"
-            alt="Podcast illustration"
-            className="rounded-full w-9 h-9  object-cover"
-          />
+      {/* Navigation Links */}
+      <div className="flex gap-8 mb-3 flex-col">
+        <Link href="/" className="text-lg hover:text-purple-300">
+          Home
         </Link>
-        <Link href="/"></Link>
-        <Link href="/"></Link>
+        <Link href="/discover" className="text-lg hover:text-purple-300">
+          Discover
+        </Link>
+        <Link href="/profile" className="text-lg hover:text-purple-300">
+          Profile
+        </Link>
+        <Link href="/create-podcast" className="text-lg hover:text-purple-300">
+          Create Podcast
+        </Link>
       </div>
     </div>
   );
