@@ -3,6 +3,7 @@ import { Montserrat, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
 import { BiSolidUser, BiUser } from "react-icons/bi";
+import { BsPlayCircleFill } from "react-icons/bs";
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "600", "500", "700", "800"],
@@ -26,57 +27,36 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${montserrat.className}`}>
-        <div className="flex">
+        <div className="flex bg-gradient-to-b from-black via-purple-950 to-purple-700">
           <Header />
 
-          <main className="flex-1 bg-gradient-to-b shadow-md from-black via-purple-950 to-purple-700 ">
+          <main className="flex-1   border-opacity-20 border border-[#ddd]">
             <div>{children}</div>
           </main>
-          <div className="bg-gradient-to-b  from-gray-800 to-purple-700 flex flex-col text-white p-7 max-w-xs w-full">
-            <h2 className="text-2xl font-bold text-white mb-6">Top Podcasts</h2>
+          <div className="bg-gradient-to-b  flex flex-col text-white p-5 max-w-xs w-full">
+            <h2 className="text-2xl font-bold text-white my-6 mb-10">
+              Top Podcasts
+            </h2>
 
             <ul className="space-y-6">
-              <li className="bg-gray-800  text-white p-5 rounded-lg flex justify-between items-center hover:bg-purple-700 transition duration-300 ease-in-out">
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold ">The Daily Buzz</span>
-                </div>
-                <div className="text-right">
-                  <div className="flex  flex-col items-center gap-1 text-sm">
-                    <span className="text-yellow-400">★★★★☆</span>
-                    <span className="flex gap-2 items-center">
-                      150 <BiSolidUser />
+              {[1, 2, 3, 4, 6].map(() => (
+                <li className="bg-gray-800 p-5 rounded-lg flex flex-col hover:bg-purple-700 transition duration-300 ease-in-out">
+                  <div className="gap-4">
+                    <span className=" font-semibold text-white">
+                      The Creative Mind
                     </span>
+                    <p className="text-xs">By Sohad Almadhoon</p>
                   </div>
-                </div>
-              </li>
-              <li className="bg-gray-800 text-white p-5 rounded-lg flex justify-between items-center hover:bg-purple-700 transition duration-300 ease-in-out">
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold ">The Daily Buzz</span>
-                </div>
-                <div className="text-right">
-                  <div className="flex items-center gap-1 text-sm flex-col" >
-                    <span className="text-yellow-400">★★★★☆</span>
-                    <span className="flex gap-2 items-center">
-                      33 <BiSolidUser />
-                    </span>
+                  <div className="text-right">
+                    <div className="flex gap-1 flex-col">
+                      <div className="flex gap-2 items-center justify-end">
+                        <BsPlayCircleFill />
+                        45
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </li>
-              <li className="bg-gray-800 p-5 rounded-lg flex justify-between items-center hover:bg-purple-700 transition duration-300 ease-in-out">
-                <div className="flex items-center gap-4">
-                  <span className="text-lg font-semibold text-white">
-                    The Creative Mind
-                  </span>
-                </div>
-                <div className="text-right">
-                  <div className="flex items-center gap-1 flex-col">
-                    <span className="text-yellow-400">★★★★★</span>
-                    <span className="flex gap-2 items-center">
-                      45 <BiSolidUser />
-                    </span>
-                  </div>
-                </div>
-              </li>
+                </li>
+              ))}
             </ul>
           </div>
         </div>

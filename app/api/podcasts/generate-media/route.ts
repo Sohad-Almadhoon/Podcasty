@@ -4,12 +4,11 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
     try {
-        const { description } = await req.json();
-
+        const { ai_prompt  , ai_voice} = await req.json();
         // Generate Image
         const imageResponse = await openai.images.generate({
             model: 'dall-e-3',
-            prompt: description,
+            prompt: ai_prompt,
             n: 1,
         });
         const imageUrl = imageResponse.data[0].url;
@@ -17,10 +16,10 @@ export async function POST(req: NextRequest) {
         // Generate Audio
         const audioResponse = await openai.audio.speech.create({
             model: "tts-1",
-            voice: 'coral',
-            input: description,
+            voice: ai_voice.toLowerCase(),
+            input: ai_prompt,
         });
-
+        
         const audioBuffer = Buffer.from(await audioResponse.arrayBuffer());
         // Upload Audio to Supabase Storage
         const audioName = `audio/${Date.now()}.mp3`;

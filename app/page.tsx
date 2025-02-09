@@ -2,12 +2,12 @@ export default function Home() {
 
   return (
     <main className="container mx-auto px-6 py-12">
-      <section className="flex flex-col md:flex-row justify-between items-center px-12">
-        <div className="text-center md:text-left ">
+      <section className="flex flex-col md:flex-row justify-between items-center">
+        <div className="text-center md:text-left flex-1 gap-5 p-1">
           <h1 className="text-4xl font-bold text-[#EDEDED]">
             Welcome to Podcasty!
           </h1>
-          <p className="mt-4 text-[#EDEDED] max-w-lg">
+          <p className="mt-4 text-[#EDEDED] max-w-sm text-sm">
             AI Podcast is your gateway to seamless, AI-generated storytelling.
             Our platform leverages cutting-edge artificial intelligence to
             transform text into immersive audio experiences. Whether you're a
@@ -16,19 +16,19 @@ export default function Home() {
             voices.
           </p>
         </div>
-        <div className="">
+        <div className="flex-1">
           <img
             src="/images/3.svg"
             alt="Podcast illustration"
-            className="shadow-lg h-[500px] rounded-full"
+            className="h-[500px]"
           />
         </div>
       </section>
-      <section className="mt-12 text-center">
-        <h2 className="text-3xl font-semibold text-[#EDEDED]">
-          About Podcasty
+      <section className="mt-12">
+        <h2 className="text-3xl text-center font-semibold text-[#EDEDED]">
+          About Podcastify
         </h2>
-        <p className="mt-4 text-[#EDEDED] max-w-2xl mx-auto text-sm">
+        <p className="mt-4 text-[#EDEDED] max-w-xl mx-auto text-sm">
           At AI Podcast, we believe in the power of technology to make content
           creation more accessible and engaging. Our platform allows you to
           input text, generate AI-driven narration, and store your podcast
@@ -37,21 +37,21 @@ export default function Home() {
           create professional-grade podcasts in minutes. Join us in redefining
           the future of podcasting with AI-driven innovation!
         </p>
-        <div className="mt-10 grid grid-cols-3 gap-8">
+        <div className="mt-10 grid grid-cols-3">
           <img
-            src="/images/1.svg"
+            src="/images/7.svg"
             alt="Podcast concept illustration"
-            className="h-48"
+            className="h-48 w-full"
           />
           <img
             src="/images/6.svg"
             alt="Podcast concept illustration"
-            className="h-48"
+            className="h-48 w-full"
           />
           <img
-            src="/images/7.svg"
+            src="/images/2.svg"
             alt="Podcast concept illustration"
-            className="h-48"
+            className="h-48 w-full"
           />
         </div>
       </section>

@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { AiFillLike } from "react-icons/ai";
 import { BiSearch } from "react-icons/bi";
+import { BsHeartFill, BsPlayBtn, BsPlayCircleFill } from "react-icons/bs";
 
 const Podcasts = () => {
   return (
@@ -15,17 +17,29 @@ const Podcasts = () => {
         Discover Trending Podcasts
       </h1>
 
-      <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8">
+      <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
         {[1, 2, 3, 4, 5, 6, 7, 8].map(() => (
           <Link
-            href="/"
-            className="text-white shadow-md rounded-md overflow-hidden">
-            <img src={"/images/1.jpeg"} alt="" className="rounded-xl" />
+            href="/podcasts/1"
+            className="text-white rounded-md shadow-md overflow-hidden">
+            <img
+              src={"/images/1.jpeg"}
+              alt=""
+              className="rounded-xl h-56 w-full object-cover"
+            />
             <div className="p-3">
               <p className="text-lg font-semibold">JS Jungle News</p>
-              <p className="text-sm ">
-                Learn What is Javascript in Simple Terms
+              <p className="text-xs">
+                Learn What is Javascript in Simple Terms...
               </p>
+              <div className="flex justify-end gap-5 text-sm items-center">
+                <span className="flex gap-1 items-center">
+                  4 <BsPlayCircleFill className="text-base"/>
+                </span>
+                <span className="flex gap-1 items-center">
+                  6 <BsHeartFill />
+                </span>
+              </div>
             </div>
           </Link>
         ))}
