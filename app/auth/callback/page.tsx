@@ -37,6 +37,7 @@ async function saveUserToDatabase(user: any) {
     const res = await fetch("/api/users", {
       method: "POST",
       body: JSON.stringify({
+        id:user.id,
         email: user.email,
         username: user.user_metadata.full_name || user.email.split("@")[0], 
         avatar_url: user.user_metadata.avatar_url,

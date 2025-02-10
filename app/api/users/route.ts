@@ -4,10 +4,10 @@ import supabase from "@/lib/supabase";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { email, username, avatar_url } = body;
+        const { email, username, avatar_url, id } = body;
         const { error } = await supabase
             .from("users")
-            .insert({  email, username, avatar_url });
+            .insert({ email, username, avatar_url, id });
 
         if (error) throw error;
 
