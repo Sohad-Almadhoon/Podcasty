@@ -34,6 +34,7 @@ export default function PodcastForm() {
 
     fetchUserId();
   }, []);
+  console.log(userId)
 
   const generateAIContent = async (aiPrompt: string, aiVoice: string) => {
     setLoading(true);
@@ -55,11 +56,19 @@ export default function PodcastForm() {
     podcast_name: string;
     description: string;
     ai_voice: string;
+    ai_prompt: string;
   }) => {
     if (!podcast) return;
+
+    const { ai_prompt, ...filteredData } = data;
+    console.log({
+      ...filteredData,
+      ...podcast,
+      user_id: userId,
+    });
     try {
       const response = await axios.post("/api/podcasts/upload", {
-        ...data,
+        ...filteredData,
         ...podcast,
         user_id: userId,
       });

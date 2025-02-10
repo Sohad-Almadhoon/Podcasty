@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(req: NextRequest) {
     try {
         const { podcast_name, description, imageUrl, audioUrl, ai_voice, user_id } = await req.json();
+        
         if (!imageUrl || !audioUrl) {
             throw new Error('Missing generated media data!');
         }
@@ -16,11 +17,12 @@ export async function POST(req: NextRequest) {
                     podcast_name,
                     description,
                     audio_url: audioUrl,
-                    image_url: imageUrl, ai_voice
+                    image_url: imageUrl,
+                    ai_voice
                 },
             ]);
         console.log(podcastData);
-        if (podcastError) throw new Error('Failed to insert podcast data into the table!');
+        if (podcastError) throw new Error('Failed to insert podcast data into the table!' + podcastError.message);
 
         return new NextResponse(
             JSON.stringify(podcastData),

@@ -1,12 +1,24 @@
 import supabase from "./supabase";
 
 const getUserId = async () => {
-    const { data: { user }, error } = await supabase.auth.getUser();
-    if (user) {
+    try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error || !session) {
+            console.error("No user found in session.");
+            return null;
+        }
+        const user = session.user;
+        
+        if (!user) {
+            console.error("No user found in session.");
+            return null;
+        }
+
         return user.id;
-    } else {
-        console.log("User not logged in", error);
+    } catch (err) {
+        console.error("Unexpected error:", err);
         return null;
     }
 };
+
 export default getUserId;

@@ -1,3 +1,5 @@
+"use client";
+import { signInWithGoogle } from "@/lib/auth";
 import Link from "next/link";
 import React from "react";
 import {
@@ -49,6 +51,12 @@ const Header = () => {
           <BiSolidUserVoice />
           Profile
         </Link>
+        <button
+          onClick={signInWithGoogle}
+          className="text-[#EDEDED] hover:text-purple-300 flex items-center gap-4">
+          <BiSolidUserVoice />
+          Sign In
+        </button>
       </div>
     </div>
   );
