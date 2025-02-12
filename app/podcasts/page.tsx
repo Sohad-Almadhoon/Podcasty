@@ -1,26 +1,33 @@
-import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { BsHeartFill, BsPlayCircleFill } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import supabase from "@/lib/supabase";
 
-interface Podcast {
-  id: string;
-  name: string;
-  description: string;
-  play_count: number;
-  likes: number;
-  image_url?: string;
-}
+const Podcasts = async () => {
+  // Fetch podcasts and likes data in one go using Supabase's relational query
+  const { data: podcasts, error: podcastError } = await supabase.from(
+    "podcasts"
+  ).select(`
+      id,
+      podcast_name,
+      description,
+      image_url,
+      play_count,
+      likes(podcast_id)
+    `);
+  if (podcastError) {
+    console.error("Error fetching podcasts:", podcastError);
+    return <div>Error loading podcasts</div>;
+  }
 
+  const podcastsWithLikes = podcasts?.map((podcast) => {
+    const likeCount = podcast.likes.length; 
+    return {
+      ...podcast,
+      likeCount,
+    };
+  });
 
-const Podcasts = async() => {
-   const { data, error } = await supabase.from("podcasts").select("*");
-
-   if (error) {
-     console.error("Error fetching podcasts:", error);
-     return <div>Error fetching podcasts</div>;
-   }
   return (
     <div className="p-5 min-h-screen">
       <div className="max-w-xl mb-6 mt-5 relative">
@@ -35,34 +42,35 @@ const Podcasts = async() => {
       </h1>
 
       <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
-        {data.map((podcast) => (
-          <Link
-            key={podcast.id}
-            href={`/podcasts/${podcast.id}`}
-            className="text-white rounded-md shadow-md overflow-hidden">
-            <img
-              src={podcast.image_url || "/images/1.jpeg"} // Assuming image URL is stored in podcast data
-              alt={podcast.name}
-              className="rounded-xl h-56 w-full object-cover"
-            />
-            <div className="p-3">
-              <p className="text-lg font-semibold">{podcast.name}</p>
-              <p className="text-xs">{podcast.description}</p>
-              <div className="flex justify-end gap-5 text-sm items-center">
-                <span className="flex gap-1 items-center">
-                  3 <BsPlayCircleFill className="text-base" />
-                </span>
-                <span className="flex gap-1 items-center">
-                  4 <BsHeartFill />
-                </span>
+        {podcastsWithLikes &&
+          podcastsWithLikes.map((podcast) => (
+            <Link
+              key={podcast.id}
+              href={`/podcasts/${podcast.id}`}
+              className="text-white rounded-md shadow-md overflow-hidden">
+              <img
+                src={podcast.image_url || "/images/1.jpeg"} // Default image if no image_url is present
+                alt={podcast.podcast_name}
+                className="rounded-xl h-56 w-full object-cover"
+              />
+              <div className="p-3">
+                <p className="text-lg font-semibold">{podcast.podcast_name}</p>
+                <p className="text-xs">{podcast.description}</p>
+                <div className="flex justify-end gap-5 text-sm items-center">
+                  <span className="flex gap-1 items-center">
+                    {podcast.play_count}{" "}
+                    <BsPlayCircleFill className="text-base" />
+                  </span>
+                  <span className="flex gap-1 items-center">
+                    {podcast.likeCount} <BsHeartFill />
+                  </span>
+                </div>
               </div>
-            </div>
-          </Link>
-        ))}
+            </Link>
+          ))}
       </div>
     </div>
   );
 };
-
 
 export default Podcasts;

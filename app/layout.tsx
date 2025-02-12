@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Montserrat, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
-import { BiSolidUser, BiUser } from "react-icons/bi";
 import { BsPlayCircleFill } from "react-icons/bs";
 const montserrat = Montserrat({
   subsets: ["latin"],
