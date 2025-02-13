@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
 
   return (
@@ -60,13 +62,13 @@ export default function Home() {
         <h2 className="text-3xl font-semibold text-[#EDEDED]">
           Let's Get Started
         </h2>
-        <p className="mt-4 text-[#EDEDED] max-w-2xl mx-auto">
+        <p className="mt-4 text-[#EDEDED] max-w-2xl mx-auto mb-9">
           Ready to share your voice with the world? Get started by creating your
           first podcast today!
         </p>
-        <button className="mt-6 px-6 py-3 bg-black text-white font-medium rounded-lg shadow-md hover:bg-purple-900 hover:text-white transition">
+        <Link href="/podcasts/create" className="mt-6 px-6 py-3 bg-black text-white font-medium rounded-lg shadow-md hover:bg-purple-900 hover:text-white transition">
           Start Now
-        </button>
+        </Link>
       </section>
     </main>
   );

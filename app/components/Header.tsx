@@ -63,10 +63,10 @@ const Header = () => {
         {user ? (
           <>
             <Link
-              href="/profile"
+              href={`/profile/${user.id}`}
               className="text-[#EDEDED] hover:text-purple-300 flex items-center gap-4">
               <BiSolidUserVoice />
-              Profile
+              My Profile
             </Link>
             <button
               onClick={signOut}

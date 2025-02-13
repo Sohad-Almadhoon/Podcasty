@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import VoicePlayer from "@/app/components/VoicePlayer";
 import { BsPlayCircleFill } from "react-icons/bs";
 import LikeButton from "@/app/components/LikeButton";
+import Link from "next/link";
 
 async function fetchPodcastDetails(id: string) {
   try {
@@ -14,6 +15,7 @@ async function fetchPodcastDetails(id: string) {
     }
 
     const data = await res.json();
+    console.log(data);
     return data?.data || null;
   } catch (error) {
     console.error("Error fetching podcast:", error);
@@ -44,11 +46,11 @@ const PodcastDetails = async ({ params }: { params: { id: string } }) => {
   if (!podcast) {
     return notFound();
   }
+  console.log(podcast)
   const otherPodcasts = await fetchOtherPodcasts(podcast.user_id, id);
   return (
     <div className="min-h-screen px-10 text-white">
       <div className="flex flex-col lg:flex-row gap-5 mt-10">
-        {/* Podcast Info */}
         <div className="flex-1">
           <h1 className="text-3xl font-bold mb-4">
             {podcast.podcast_name || "Untitled Podcast"}
@@ -60,7 +62,7 @@ const PodcastDetails = async ({ params }: { params: { id: string } }) => {
           <p className="mt-5 text-sm bg-black shadow-lg p-3 w-fit rounded-xl font-semibold flex items-center gap-6">
             AI VOICE{" "}
             <span className="text-purple-700 bg-white p-2 rounded-xl">
-              SHIMMER
+              {podcast.ai_voice || "Unknown"}
             </span>
           </p>
 
@@ -72,6 +74,10 @@ const PodcastDetails = async ({ params }: { params: { id: string } }) => {
             </span>
             <LikeButton podcastId={id} userId={podcast.user_id} />
           </div>
+          <Link href={`/profile/${podcast.user_id}`} className="flex items-center gap-3 mt-5">
+            <img src={podcast.users.avatar_url} alt="" className="w-11 h-11 rounded-full"/>
+            <span>By {podcast.users.username}</span>
+          </Link>
         </div>
 
         {/* Podcast Media */}

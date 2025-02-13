@@ -10,7 +10,7 @@ const montserrat = Montserrat({
 });
 const dancingScript = Dancing_Script({
   subsets: ["latin"],
-  weight: ["400", "700"], // You can adjust this based on your needs
+  weight: ["400", "700"], 
 });
 
 export const metadata: Metadata = {
