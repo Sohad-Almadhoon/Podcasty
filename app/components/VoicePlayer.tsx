@@ -43,7 +43,6 @@ const VoicePlayer = ({
       if (podcastId) {
         await updatePlayCount(podcastId);
       }
-      // Increment play count every time play is pressed
     }
   };
 

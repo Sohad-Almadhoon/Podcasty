@@ -15,12 +15,39 @@ export async function signInWithGoogle() {
     console.log("Redirecting to Google OAuth...");
 }
 
-export async function getUserSession() {
-    const { data, error } = await supabase.auth.getSession();
-    if (error || !data.session) return null;
-    return data.session.user;
-}
+export const getUser = async () => {
+    try {
+        const { data: { session }, error } = await supabase.auth.getSession();
+        if (error || !session) {
+            console.error("No user found in session.");
+            return null;
+        }
+        const user = session.user;
+        if (!user) {
+            console.error("No user found in session.");
+            return null;
+        }
+        const userDetails = user.user_metadata;
+        const {
+            avatar_url,
+            email,
+            full_name, picture,
+        } = userDetails;
 
+        return {
+            id: user.id,
+            avatar_url,
+            email,
+            full_name,
+            picture,
+        };
+    } catch (err) {
+        console.error("Unexpected error:", err);
+        return null;
+    }
+
+};
+ 
 export async function signOut() {
     await supabase.auth.signOut();
     window.location.href = "/";

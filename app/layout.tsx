@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat, Dancing_Script } from "next/font/google";
 import "./globals.css";
 import Header from "./components/Header";
-import { BsPlayCircleFill } from "react-icons/bs";
+import Sidebar from "./components/Sidebar";
 const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["400", "600", "500", "700", "800"],
@@ -37,26 +37,7 @@ export default function RootLayout({
               Top Podcasts
             </h2>
 
-            <ul className="space-y-6">
-              {[1, 2, 3, 4, 6].map(() => (
-                <li className="bg-gray-800 p-5 rounded-lg flex flex-col hover:bg-purple-700 transition duration-300 ease-in-out">
-                  <div className="gap-4">
-                    <span className=" font-semibold text-white">
-                      The Creative Mind
-                    </span>
-                    <p className="text-xs">By Sohad Almadhoon</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="flex gap-1 flex-col">
-                      <div className="flex gap-2 items-center justify-end">
-                        <BsPlayCircleFill />
-                        45
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <Sidebar />
           </div>
         </div>
       </body>

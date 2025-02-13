@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import VoicePlayer from "./VoicePlayer";
-import getUserId from "@/lib/user";
+import {getUser} from "@/lib/auth";
+
 
 export default function PodcastForm() {
   const {
@@ -28,13 +29,15 @@ export default function PodcastForm() {
   const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => {
     const fetchUserId = async () => {
-      const id = await getUserId();
-      setUserId(id);
+      const user = await getUser();
+      if (user) {
+        setUserId(user.id);
+      }
     };
 
     fetchUserId();
   }, []);
-  console.log(userId)
+  console.log(userId);
 
   const generateAIContent = async (aiPrompt: string, aiVoice: string) => {
     setLoading(true);

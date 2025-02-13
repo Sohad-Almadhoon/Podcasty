@@ -20,6 +20,23 @@ async function fetchPodcastDetails(id: string) {
     return null;
   }
 }
+async function fetchOtherPodcasts(userId: string, podcastId: string) {
+  try {
+    const res = await fetch(
+      `http://localhost:3000/api/podcasts/${podcastId}?userId=${userId}`
+    );
+    if (!res.ok) {
+      console.error("Failed to fetch other podcasts:", res.statusText);
+      return [];
+    }
+    const data = await res.json();
+    console.log(data);
+    return data?.data || [];
+  } catch (error) {
+    console.error("Error fetching other podcasts:", error);
+    return [];
+  }
+}
 
 const PodcastDetails = async ({ params }: { params: { id: string } }) => {
   const id = decodeURIComponent(params.id);
@@ -27,6 +44,7 @@ const PodcastDetails = async ({ params }: { params: { id: string } }) => {
   if (!podcast) {
     return notFound();
   }
+  const otherPodcasts = await fetchOtherPodcasts(podcast.user_id, id);
   return (
     <div className="min-h-screen px-10 text-white">
       <div className="flex flex-col lg:flex-row gap-5 mt-10">
@@ -38,7 +56,7 @@ const PodcastDetails = async ({ params }: { params: { id: string } }) => {
           <p className="text-sm">
             {podcast.description || "No description available."}
           </p>
-         
+
           <p className="mt-5 text-sm bg-black shadow-lg p-3 w-fit rounded-xl font-semibold flex items-center gap-6">
             AI VOICE{" "}
             <span className="text-purple-700 bg-white p-2 rounded-xl">
@@ -70,7 +88,26 @@ const PodcastDetails = async ({ params }: { params: { id: string } }) => {
       {/* More Podcasts Section */}
       <div className="mt-8">
         <h4 className="text-xl font-bold">More Podcasts by this User</h4>
-        {/* Future implementation for more podcasts */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          {otherPodcasts.length > 0 ? (
+            otherPodcasts.map((podcast: any) => (
+              <div
+                key={podcast.id}
+                className="bg-gray-800 p-4 rounded-lg shadow-md">
+                <img
+                  src={podcast.image_url}
+                  alt={podcast.podcast_name}
+                  className="w-full h-40 object-cover rounded-lg mb-3"
+                />
+                <h5 className="text-lg font-semibold">
+                  {podcast.podcast_name}
+                </h5>
+              </div>
+            ))
+          ) : (
+            <p>No other podcasts available.</p>
+          )}
+        </div>
       </div>
     </div>
   );
