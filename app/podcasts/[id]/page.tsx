@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import VoicePlayer from "@/app/components/VoicePlayer";
-import { BsPlayCircleFill } from "react-icons/bs";
+import { BsHeartFill, BsPlayCircleFill } from "react-icons/bs";
 import LikeButton from "@/app/components/LikeButton";
 import Link from "next/link";
 
@@ -74,8 +74,14 @@ const PodcastDetails = async ({ params }: { params: { id: string } }) => {
             </span>
             <LikeButton podcastId={id} userId={podcast.user_id} />
           </div>
-          <Link href={`/profile/${podcast.user_id}`} className="flex items-center gap-3 mt-5">
-            <img src={podcast.users.avatar_url} alt="" className="w-11 h-11 rounded-full"/>
+          <Link
+            href={`/profile/${podcast.user_id}`}
+            className="flex items-center gap-3 mt-5">
+            <img
+              src={podcast.users.avatar_url}
+              alt=""
+              className="w-11 h-11 rounded-full"
+            />
             <span>By {podcast.users.username}</span>
           </Link>
         </div>
@@ -97,18 +103,36 @@ const PodcastDetails = async ({ params }: { params: { id: string } }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           {otherPodcasts.length > 0 ? (
             otherPodcasts.map((podcast: any) => (
-              <div
+              <Link
                 key={podcast.id}
-                className="bg-gray-800 p-4 rounded-lg shadow-md">
+                href={`/podcasts/${podcast.id}`}
+                className="text-white rounded-md shadow-md overflow-hidden">
                 <img
                   src={podcast.image_url}
                   alt={podcast.podcast_name}
-                  className="w-full h-40 object-cover rounded-lg mb-3"
+                  className="w-full h-40 object-cover rounded-lg mb-1"
                 />
-                <h5 className="text-lg font-semibold">
-                  {podcast.podcast_name}
-                </h5>
-              </div>
+                <div className="flex flex-col p-2">
+                  <h5 className="text-lg font-semibold">
+                    {podcast.podcast_name}
+                  </h5>
+                  <p className="text-sm">
+                    {podcast.description.length > 100
+                      ? podcast.description.substring(0, 100) + "..."
+                      : podcast.description}
+                  </p>
+                  <div className="flex gap-2 justify-end text-sm">
+                    <span className="flex items-center gap-1 justify-end">
+                      <BsPlayCircleFill />
+                      {podcast.play_count}
+                    </span>
+                    <span className="flex items-center gap-1 justify-end">
+                      <BsHeartFill />
+                      {podcast.likes.length}
+                    </span>
+                  </div>
+                </div>
+              </Link>
             ))
           ) : (
             <p>No other podcasts available.</p>

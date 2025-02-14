@@ -3,9 +3,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request, props: { params: Promise<{ id: string }> }) {
     const params = await props.params;
-    const { id } = params; 
+    const { id } = params;
     const { searchParams } = new URL(req.url);
-    const userId = searchParams.get("userId"); 
+    const userId = searchParams.get("userId");
 
     try {
         let query;
@@ -17,6 +17,7 @@ export async function GET(req: Request, props: { params: Promise<{ id: string }>
       podcast_name,
       description,
       image_url,
+      audio_url,
       play_count,
       ai_voice,
       user_id,
@@ -33,6 +34,7 @@ export async function GET(req: Request, props: { params: Promise<{ id: string }>
       podcast_name,
       description,
       image_url,
+       audio_url,
       play_count,
       ai_voice,
       user_id,
