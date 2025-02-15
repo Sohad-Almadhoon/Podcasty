@@ -9,23 +9,22 @@ export default {
 	],
 	theme: {
 		extend: {
-			colors: {
-				primary: '#6864CF',
-			},
-			backgroundImage: {
-				'primary-img': "url('/images/test.png')",
-
-			},
 			fontFamily: {
-				montserrat: ['Montserrat', 'sans-serif'],
-				dancingScript: ['Dancing Script', 'cursive'],
+				montserrat: [
+					'Montserrat',
+					'sans-serif'
+				],
+				dancingScript: [
+					'Dancing Script',
+					'cursive'
+				]
 			},
+			borderRadius: {
+				lg: 'var(--radius)',
+				md: 'calc(var(--radius) - 2px)',
+				sm: 'calc(var(--radius) - 4px)'
+			}
 		}
-	}
-
-
-
-
-
-
+	},
+	plugins: [require("tailwindcss-animate")]
 } satisfies Config;

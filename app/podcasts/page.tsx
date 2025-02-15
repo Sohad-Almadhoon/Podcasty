@@ -1,13 +1,14 @@
 "use client";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { BsHeartFill, BsPlayCircleFill } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import supabase from "@/lib/supabase";
-import { useEffect, useState } from "react";
+import PodcastCard from "../components/PodcastCard";
+import { Podcast } from "../types";
 
 const Podcasts = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [podcasts, setPodcasts] = useState<any[]>([]);
+  const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [loading, setLoading] = useState(true);
   const [podcastError, setPodcastError] = useState<string | null>(null);
 
@@ -28,8 +29,9 @@ const Podcasts = () => {
         .ilike("podcast_name", `%${searchTerm}%`);
 
       if (error) throw error;
+      //@ts-ignore
       setPodcasts(data || []);
-      setPodcastError(null); 
+      setPodcastError(null);
     } catch (error) {
       setPodcastError("Error fetching podcasts. Please try again later.");
     } finally {
@@ -44,6 +46,16 @@ const Podcasts = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
+
+  if (loading) {
+    return (
+      <div className="p-5 min-h-screen">
+        <div className="text-center">
+          <p className="text-white">Loading podcasts...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-5 min-h-screen">
@@ -68,55 +80,21 @@ const Podcasts = () => {
         </div>
       )}
 
-      {loading ? (
-        <div className="text-center">
-          <p className="text-white">Loading podcasts...</p>
-        </div>
-      ) : (
-        <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
-          {podcasts.length > 0 ? (
-            podcasts.map((podcast) => (
-              <Link
-                key={podcast.id}
-                href={`/podcasts/${podcast.id}`}
-                className="text-white rounded-md shadow-md overflow-hidden">
-                <img
-                  src={podcast.image_url || "/images/1.jpeg"}
-                  alt={podcast.podcast_name}
-                  className="rounded-xl h-56 w-full object-cover"
-                />
-                <div className="p-3">
-                  <p className="text-lg font-semibold">
-                    {podcast.podcast_name}
-                  </p>
-                  <p className="text-sm">
-                    {podcast.description.length > 100
-                      ? podcast.description.substring(0, 100) + "..."
-                      : podcast.description}
-                  </p>
-
-                  <div className="flex justify-between gap-5 text-sm items-center mt-3">
-                    <p className="text-xs my-5 font-bold">
-                      By {podcast.users?.username || "Unknown"}
-                    </p>
-                    <div className="flex gap-3 items-center">
-                      <span className="flex gap-1 items-center">
-                        {podcast.play_count}{" "}
-                        <BsPlayCircleFill className="text-base" />
-                      </span>
-                      <span className="flex gap-1 items-center">
-                        {podcast.likes.length} <BsHeartFill />
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))
-          ) : (
-            <div className="text-white">No podcasts found for your search.</div>
-          )}
-        </div>
-      )}
+      <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5">
+        {podcasts.length > 0 ? (
+          podcasts.map((podcast) => (
+            <Link key={podcast.id} href={`/podcasts/${podcast.id}`}>
+              <PodcastCard
+                podcast={podcast}
+                likes={podcast.likes?.length || 0}
+                username={podcast.users?.username || "Unknown"}
+              />
+            </Link>
+          ))
+        ) : (
+          <div className="text-white">No podcasts found for your search.</div>
+        )}
+      </div>
     </div>
   );
 };

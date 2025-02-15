@@ -4,22 +4,10 @@ import { BsPlayCircleFill } from "react-icons/bs";
 import { AiFillDelete } from "react-icons/ai";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import PodcastCard from "@/app/components/PodcastCard";
+import { Podcast, User } from "@/app/types";
 
-interface User {
-  id: string;
-  avatar_url?: string;
-  email: string;
-  username?: string;
-  picture?: string;
-}
 
-interface Podcast {
-  id: string;
-  podcast_name: string;
-  play_count: number;
-  image_url?: string;
-  description: string;
-}
 
 const Profile = () => {
   const { id } = useParams();
@@ -97,28 +85,12 @@ const Profile = () => {
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {podcasts.map((podcast) => (
             <div key={podcast.id} className="p-4 rounded-lg shadow-md relative">
-              <Link href={`/podcasts/${podcast.id}`}>
-                {podcast.image_url && (
-                  <img
-                    src={podcast.image_url}
-                    alt={podcast.podcast_name}
-                    className="w-full h-40 object-cover rounded-lg mb-3"
-                  />
-                )}
-                <div className="flex flex-col gap-1">
-                  <h5 className="text-lg font-semibold">
-                    {podcast.podcast_name}
-                  </h5>
-                  <p className="text-sm">
-                    {podcast.description.length > 100
-                      ? podcast.description.substring(0, 100) + "..."
-                      : podcast.description}
-                  </p>
-                  <span className="flex items-center gap-1 justify-end">
-                    <BsPlayCircleFill />
-                    {podcast.play_count}
-                  </span>
-                </div>
+              <Link key={podcast.id} href={`/podcasts/${podcast.id}`}>
+                <PodcastCard
+                  podcast={podcast}
+                  likes={podcast.likes?.length || 0}
+                  username={podcast.users?.username || "Unknown"}
+                />
               </Link>
               <button
                 onClick={() => deletePodcast(podcast.id)}

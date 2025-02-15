@@ -1,17 +1,11 @@
-"use client";
-import { RotatingLines } from "react-loader-spinner";
+import { Loader } from "lucide-react";
 
-const Loading = () => {
+const LoaderSpinner = () => {
   return (
-    <div className="flex items-center justify-center mt-2 h-full w-full">
-      <RotatingLines
-        width="50"
-        strokeColor="#000"
-        ariaLabel="triangle-loading"
-        visible={true}
-      />
+    <div className="flex-center h-screen w-full">
+      <Loader className="animate-spin text-orange-1" size={30} />
     </div>
   );
 };
 
-export default Loading;
+export default LoaderSpinner;

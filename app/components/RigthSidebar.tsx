@@ -18,7 +18,7 @@ async function fetchMostPlayedPodcasts() {
   return data;
 }
 
-export default async function Sidebar() {
+export default async function RigthSidebar() {
   const mostPlayedPodcasts = await fetchMostPlayedPodcasts();
 
   return (

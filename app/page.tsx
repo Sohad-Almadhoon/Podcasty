@@ -9,7 +9,7 @@ export default function Home() {
           <h1 className="lg:text-4xl text-3xl font-bold text-[#EDEDED]">
             Welcome to Podcasty!
           </h1>
-          <p className="mt-4 text-[#EDEDED] max-w-sm lg:text-sm text-xs text-left">
+          <p className="mt-4 text-[#EDEDED] lg:max-w-sm lg:text-sm text-xs text-left">
             AI Podcast is your gateway to seamless, AI-generated storytelling.
             Our platform leverages cutting-edge artificial intelligence to
             transform text into immersive audio experiences. Whether you're a

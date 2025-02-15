@@ -28,3 +28,9 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%; 
   cursor: pointer;
 }
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
