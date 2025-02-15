@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import { notFound, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import LikeButton from "@/app/components/LikeButton";
@@ -42,8 +42,8 @@ async function fetchOtherPodcasts(userId: string, podcastId: string) {
 
 const PodcastDetails = () => {
   const { id } = useParams<{ id: string }>();
-  if(!id) return null;
-  console.log(id)
+  if (!id) return null;
+  console.log(id);
   const [podcast, setPodcast] = useState<any | null>(null);
   const [otherPodcasts, setOtherPodcasts] = useState<any[]>([]);
   const { setAudio } = useAudio();
@@ -53,7 +53,10 @@ const PodcastDetails = () => {
       const podcastData = await fetchPodcastDetails(id);
       if (podcastData) {
         setPodcast(podcastData);
-        const otherPodcastsData = await fetchOtherPodcasts(podcastData.user_id, id);
+        const otherPodcastsData = await fetchOtherPodcasts(
+          podcastData.user_id,
+          id
+        );
         setOtherPodcasts(otherPodcastsData);
       } else {
         notFound();
@@ -67,26 +70,28 @@ const PodcastDetails = () => {
   }
 
   const handlePlay = () => {
-   console.log("Setting audio data:", {
-     audioUrl: podcast.audio_url,
-     podcastId: id,
-     imageUrl: podcast.image_url,
-     title: podcast.podcast_name,
-     author: podcast.users.username,
-   });
+    console.log("Setting audio data:", {
+      audioUrl: podcast.audio_url,
+      podcastId: id,
+      imageUrl: podcast.image_url,
+      title: podcast.podcast_name,
+      author: podcast.users.username,
+    });
 
-   setAudio({
-     audioUrl: podcast.audio_url,
-     podcastId: id,
-     imageUrl: podcast.image_url,
-     title: podcast.podcast_name,
-     author: podcast.users.username,
-   });
+    setAudio({
+      audioUrl: podcast.audio_url,
+      podcastId: id,
+      imageUrl: podcast.image_url,
+      title: podcast.podcast_name,
+      author: podcast.users.username,
+    });
   };
 
   return (
     <div className="min-h-screen px-10 text-white pb-12">
-      <h1 className="text-3xl font-bold my-5">{podcast.podcast_name || "Untitled Podcast"}</h1>
+      <h1 className="text-3xl font-bold my-5">
+        {podcast.podcast_name || "Untitled Podcast"}
+      </h1>
       <div className="flex flex-col lg:flex-row">
         <div className="flex-1 flex flex-col">
           <img
@@ -102,7 +107,9 @@ const PodcastDetails = () => {
             </span>
             <LikeButton podcastId={id} userId={podcast.user_id} />
           </div>
-          <Link href={`/profile/${podcast.user_id}`} className="flex items-center gap-3 mt-5">
+          <Link
+            href={`/profile/${podcast.user_id}`}
+            className="flex items-center gap-3 mt-5">
             <img
               src={podcast.users.avatar_url}
               alt=""
@@ -117,8 +124,11 @@ const PodcastDetails = () => {
               {podcast.ai_voice || "Unknown"}
             </span>
           </p>
-          <button className="bg-purple-700 flex items-center rounded-lg py-3 px-6 gap-3">
-            Play Podcast <BiMicrophone className="text-lg" onClick={handlePlay} />
+          <button
+            className="bg-purple-700 flex items-center rounded-lg py-3 px-6 gap-3"
+            onClick={handlePlay}>
+            Play Podcast{" "}
+            <BiMicrophone className="text-lg"/>
           </button>
         </div>
       </div>
@@ -129,7 +139,7 @@ const PodcastDetails = () => {
         </p>
       </div>
       <hr className="border-b border-gray-200 my-5 opacity-50" />
-      
+
       {/* More Podcasts Section */}
       <div className="mt-8">
         <h4 className="text-xl font-bold">More Podcasts by this User</h4>
