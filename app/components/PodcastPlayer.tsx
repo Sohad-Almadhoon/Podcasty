@@ -104,7 +104,7 @@ const PodcastPlayer = () => {
         className="w-full"
         max={duration ? duration : 100}
       />
-      <section className="flex h-[112px] w-full items-center justify-between px-4 max-md:justify-center max-md:gap-5 md:px-12">
+      <section className="flex h-[90px] w-full items-center justify-around px-4 max-md:justify-center max-md:gap-5 md:px-12">
         <audio
           ref={audioRef}
           src={audio?.audioUrl}
@@ -113,14 +113,8 @@ const PodcastPlayer = () => {
           onEnded={handleAudioEnded}
         />
         <div className="flex items-center gap-4 max-md:hidden">
-          <Link href={`/podcast/${audio?.podcastId}`}>
-            <Image
-              src={audio?.imageUrl! || ""}
-              width={64}
-              height={64}
-              alt="player1"
-              className="aspect-square rounded-xl"
-            />
+          <Link href={`/podcasts/${audio?.podcastId}`}>
+            <img src={audio?.imageUrl} alt="" className="h-10 w-10"/>
           </Link>
           <div className="flex w-[160px] flex-col">
             <h2 className="text-14 truncate font-semibold text-white-1">
