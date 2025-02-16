@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { BiSearch } from "react-icons/bi";
-import supabase from "@/lib/supabase";
+import supabase from "@/app/lib/supabase";
 import PodcastCard from "../components/PodcastCard";
 import { Podcast } from "../types";
 

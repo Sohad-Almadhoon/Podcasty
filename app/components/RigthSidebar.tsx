@@ -1,7 +1,7 @@
 //@ts-nocheck
 import { BsPlayCircleFill } from "react-icons/bs";
 import Link from "next/link";
-import supabase from "@/lib/supabase";
+import supabase from "@/app/lib/supabase";
 
 async function fetchMostPlayedPodcasts() {
   const { data, error } = await supabase

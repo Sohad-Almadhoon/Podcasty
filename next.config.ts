@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
                 hostname: "lh3.googleusercontent.com",
             }, {
                 protocol: "https",
-                hostname: "oaidalleapiprodscus.blob.core.windows.net",
+                hostname: "lpcdhaeraghnskrvvxak.supabase.co",
             },
         ],
     },

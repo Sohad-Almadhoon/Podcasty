@@ -1,10 +1,10 @@
-import supabase from '@/lib/supabase';
+import supabase from '@/app/lib/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
     try {
         const { podcast_name, description, imageUrl, audioUrl, ai_voice, user_id } = await req.json();
-        
+
         if (!imageUrl || !audioUrl) {
             throw new Error('Missing generated media data!');
         }

@@ -1,5 +1,5 @@
-import openai from '@/lib/openai';
-import supabase from '@/lib/supabase';
+import openai from '@/app/lib/openai';
+import supabase from '@/app/lib/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
         // Generate Audio
         const audioResponse = await openai.audio.speech.create({
             model: "tts-1",
-            voice : ai_voice.toLowerCase(),
+            voice: ai_voice.toLowerCase(),
             input: ai_prompt,
         });
 

@@ -11,12 +11,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { User } from "../types";
 import { BiSolidLogIn, BiSolidLogOut, BiSolidUserVoice } from "react-icons/bi";
-import { signInWithGoogle, signOut, getUser } from "@/lib/auth";
+import { signInWithGoogle, signOut, getUserClient } from "@/app/lib/auth";
 const MobileNav = () => {
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
     (async () => {
-      const fetchedUser = await getUser();
+      const fetchedUser = await getUserClient();
+      console.log(fetchedUser);
       if (fetchedUser) setUser(fetchedUser);
     })();
   }, []);

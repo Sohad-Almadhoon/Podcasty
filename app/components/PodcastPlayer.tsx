@@ -1,53 +1,27 @@
 "use client";
-import { useEffect, useRef, useState, ChangeEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { BsPauseFill, BsPlayFill } from "react-icons/bs";
-import { Progress } from "@/components/ui/progress";
+import { useEffect, useRef, useState } from "react";
+
+import { Progress } from "./ui/progress";
+import { formatTime } from "../lib/formatTime";
+import { cn } from "../lib/utils";
 import { useAudio } from "../providers/AudioProvider";
-import { cn } from "@/lib/utils";
-import { AiFillMuted, AiFillSound } from "react-icons/ai";
-import { formatTime } from "@/lib/formatTime";
+import { BsForwardFill, BsPause, BsPlay, BsPlayFill, BsVolumeMute } from "react-icons/bs";
+import { BiFastForward, BiRewind, BiSolidVolume } from "react-icons/bi";
 
 const PodcastPlayer = () => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
   const { audio } = useAudio();
   console.log(audio);
-
-  useEffect(() => {
-    const audioElement = audioRef.current;
-    if (!audioElement) return;
-
-    const updateTime = () => setCurrentTime(audioElement.currentTime);
-    const updateDuration = () => setDuration(audioElement.duration);
-
-    audioElement.addEventListener("loadedmetadata", updateDuration);
-    audioElement.addEventListener("timeupdate", updateTime);
-
-    return () => {
-      audioElement.removeEventListener("loadedmetadata", updateDuration);
-      audioElement.removeEventListener("timeupdate", updateTime);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (audio?.audioUrl && audioRef.current) {
-      audioRef.current.play().then(() => setIsPlaying(true));
-    } else {
-      audioRef.current?.pause();
-      setIsPlaying(false);
-    }
-  }, [audio]);
-
-  const togglePlayPause = async () => {
+  const togglePlayPause = () => {
     if (audioRef.current?.paused) {
-      await audioRef.current.play();
+      audioRef.current?.play();
       setIsPlaying(true);
-      if (audio?.podcastId) await updatePlayCount(audio.podcastId);
     } else {
       audioRef.current?.pause();
       setIsPlaying(false);
@@ -61,39 +35,90 @@ const PodcastPlayer = () => {
     }
   };
 
-  const handleSliderChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newTime = Number(e.target.value);
-    setCurrentTime(newTime);
-    if (audioRef.current) audioRef.current.currentTime = newTime;
+  const forward = () => {
+    if (
+      audioRef.current &&
+      audioRef.current.currentTime &&
+      audioRef.current.duration &&
+      audioRef.current.currentTime + 5 < audioRef.current.duration
+    ) {
+      audioRef.current.currentTime += 5;
+    }
   };
 
-  const updatePlayCount = async (id: string) => {
-    try {
-      await fetch(`/api/podcasts/${id}/play`, { method: "POST" });
-    } catch (error) {
-      console.error("Failed to update play count:", error);
+  const rewind = () => {
+    if (audioRef.current && audioRef.current.currentTime - 5 > 0) {
+      audioRef.current.currentTime -= 5;
+    } else if (audioRef.current) {
+      audioRef.current.currentTime = 0;
     }
+  };
+
+  useEffect(() => {
+    const updateCurrentTime = () => {
+      if (audioRef.current) {
+        setCurrentTime(audioRef.current.currentTime);
+      }
+    };
+
+    const audioElement = audioRef.current;
+    if (audioElement) {
+      audioElement.addEventListener("timeupdate", updateCurrentTime);
+
+      return () => {
+        audioElement.removeEventListener("timeupdate", updateCurrentTime);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
+    const audioElement = audioRef.current;
+    if (audio?.audioUrl) {
+      if (audioElement) {
+        audioElement.play().then(() => {
+          setIsPlaying(true);
+        });
+      }
+    } else {
+      audioElement?.pause();
+      setIsPlaying(true);
+    }
+  }, [audio]);
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+  };
+
+  const handleAudioEnded = () => {
+    setIsPlaying(false);
   };
 
   return (
     <div
       className={cn("sticky bottom-0 left-0 flex size-full flex-col", {
-        hidden: !audio?.audioUrl,
+        hidden: !audio?.audioUrl || audio?.audioUrl === "",
       })}>
       <Progress
         value={(currentTime / duration) * 100}
         className="w-full"
-        max={duration}
+        max={duration ? duration : 100}
       />
-      <section className="glassmorphism-black flex h-[112px] w-full items-center justify-between px-4 md:px-12">
-        <audio ref={audioRef} src={audio?.audioUrl} className="hidden" />
+      <section className="flex h-[112px] w-full items-center justify-between px-4 max-md:justify-center max-md:gap-5 md:px-12">
+        <audio
+          ref={audioRef}
+          src={audio?.audioUrl}
+          className="hidden"
+          onLoadedMetadata={handleLoadedMetadata}
+          onEnded={handleAudioEnded}
+        />
         <div className="flex items-center gap-4 max-md:hidden">
           <Link href={`/podcast/${audio?.podcastId}`}>
             <Image
-              src={audio?.imageUrl || "/images/player1.png"}
+              src={audio?.imageUrl! || ""}
               width={64}
               height={64}
-              alt="player"
+              alt="player1"
               className="aspect-square rounded-xl"
             />
           </Link>
@@ -104,31 +129,33 @@ const PodcastPlayer = () => {
             <p className="text-12 font-normal text-white-2">{audio?.author}</p>
           </div>
         </div>
-        <div className="flex-center cursor-pointer gap-3 md:gap-6">
-          <button
-            onClick={togglePlayPause}
-            className="rounded-full w-10 h-10 flex justify-center items-center">
-            {isPlaying ? (
-              <BsPauseFill className="text-3xl text-purple-700" />
-            ) : (
-              <BsPlayFill className="text-3xl text-purple-700" />
-            )}
-          </button>
-          <span>{formatTime(currentTime)}</span>
-          <input
-            type="range"
-            min="0"
-            max={duration}
-            step="1"
-            value={currentTime}
-            onChange={handleSliderChange}
-            className="flex-1 appearance-none bg-purple-700 h-1"
-          />
-          <span>{formatTime(duration)}</span>
+        <div className="flex items-center cursor-pointer gap-3 md:gap-6">
+          <div className="flex items-center gap-1.5">
+            <BiRewind className="text-2xl"/>
+            <h2 className="text-12 font-bold text-white-4">-5</h2>
+          </div>
+          {isPlaying ? (
+            <BsPause onClick={togglePlayPause} className="text-2xl"/>
+          ) : (
+            <BsPlayFill onClick={togglePlayPause} className="text-2xl"/>
+          )}
+          <div className="flex items-center gap-1.5">
+            <h2 className="text-12 font-bold text-white-4">+5</h2>
+            <BiFastForward onClick={forward} className="text-2xl" />
+          </div>
         </div>
-        <button onClick={toggleMute} className="cursor-pointer">
-          {isMuted ? <AiFillMuted size={24} /> : <AiFillSound size={24} />}
-        </button>
+        <div className="flex items-center gap-6">
+          <h2 className="text-16 font-normal text-white-2 max-md:hidden">
+            {formatTime(duration)}
+          </h2>
+          <div className="flex w-full gap-2">
+            {isMuted ? (
+              <BsVolumeMute onClick={toggleMute} className="text-2xl" />
+            ) : (
+              <BiSolidVolume onClick={toggleMute} className="text-2xl" />
+            )}
+          </div>
+        </div>
       </section>
     </div>
   );

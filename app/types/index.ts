@@ -16,7 +16,6 @@ export interface User {
   avatar_url: string;
   email: string;
   username: string;
-  picture: string;
 }
 export
   interface Podcast {

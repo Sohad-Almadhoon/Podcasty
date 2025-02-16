@@ -4,8 +4,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import VoicePlayer from "./VoicePlayer";
-import {getUser} from "@/lib/auth";
-
+import { getUser } from "@/app/lib/auth";
 
 export default function PodcastForm() {
   const {

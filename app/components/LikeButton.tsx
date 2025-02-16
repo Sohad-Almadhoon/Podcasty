@@ -31,7 +31,7 @@ const LikeButton = ({
 
     fetchLikes();
   }, [podcastId, userId]);
-  console.log(likes);
+
   const toggleLike = async () => {
     startTransition(() => {
       setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
