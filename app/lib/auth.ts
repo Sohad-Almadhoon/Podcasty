@@ -1,37 +1,25 @@
-import supabase from "./supabase";
+import { redirect } from "next/navigation";
+import { createClient } from "./supabase";
 
-export async function signInWithGoogle() {
-    const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
+export const signInWithGoogle = async () => {
+    const supabase= await createClient();
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
         options: {
-            redirectTo: `http://localhost:3000/auth/callback`,
+            redirectTo: 'http://localhost:3000/api/auth/callback',
         },
-    });
-
+    })
     if (error) {
-        console.error("Google Sign-In Error:", error);
+        console.error("Error signing in with Google:", error);
         return;
     }
+    if (data.url) {
+        redirect(data.url);
+    }
 
-    console.log("Redirecting to Google OAuth...");
 }
-
-export async function getUserClient() {
-    const { data: { session }, error } = await supabase.auth.getSession();
-    if (error || !session) return null;
-    const user = session.user;
-    console.log(session.user.user_metadata)
-    return {
-        id: user.id,
-        avatar_url: user.user_metadata.avatar_url,
-        email: user.user_metadata.email,
-        username: user.user_metadata.full_name,
-    };
-}
-
-
 
 export async function signOut() {
+    const supabase = await createClient();
     await supabase.auth.signOut();
-    window.location.href = "/";
 }

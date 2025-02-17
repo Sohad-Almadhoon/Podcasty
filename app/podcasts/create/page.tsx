@@ -1,4 +1,4 @@
-import PodcastForm from "@/app/components/PodcastForm";
+import PodcastForm from "@/components/PodcastForm";
 import React from "react";
 
 const CreatePodcast = () => {

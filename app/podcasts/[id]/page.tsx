@@ -1,91 +1,26 @@
-"use client";
-import { notFound, useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import LikeButton from "@/app/components/LikeButton";
+//@ts-nocheck
 import Link from "next/link";
-import PodcastCard from "@/app/components/PodcastCard";
-import { BiMicrophone } from "react-icons/bi";
 import { HeadphonesIcon } from "lucide-react";
-import { useAudio } from "@/app/providers/AudioProvider";
+import LikeButton from "@/components/buttons/LikeButton";
+import PodcastCard from "@/components/PodcastCard";
+import PlayPodcastButton from "@/components/buttons/PlayPodcastButton";
+import { getPodcastDetails } from "@/app/actions/podcasts";
+import { notFound } from "next/navigation";
+import LoaderSpinner from "@/app/loading";
 
-async function fetchPodcastDetails(id: string) {
-  try {
-    const res = await fetch(`http://localhost:3000/api/podcasts/${id}`);
-    if (!res.ok) {
-      console.error("Failed to fetch podcast details:", res.statusText);
-      return null;
-    }
-    const data = await res.json();
-    return data?.data || null;
-  } catch (error) {
-    console.error("Error fetching podcast:", error);
-    return null;
-  }
-}
+export default async function PodcastDetails({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const { id } = await params;
+  if (!id) return notFound();
 
-async function fetchOtherPodcasts(userId: string, podcastId: string) {
-  try {
-    const res = await fetch(
-      `http://localhost:3000/api/podcasts/${podcastId}?userId=${userId}`
-    );
-    if (!res.ok) {
-      console.error("Failed to fetch other podcasts:", res.statusText);
-      return [];
-    }
-    const data = await res.json();
-    return data?.data || [];
-  } catch (error) {
-    console.error("Error fetching other podcasts:", error);
-    return [];
-  }
-}
+  const { data: podcast, error } = await getPodcastDetails(id);
+  if (error || !podcast) return notFound();
+  if(!podcast) return LoaderSpinner();
 
-const PodcastDetails = () => {
-  const { id } = useParams<{ id: string }>();
-  if (!id) return null;
-  console.log(id);
-  const [podcast, setPodcast] = useState<any | null>(null);
-  const [otherPodcasts, setOtherPodcasts] = useState<any[]>([]);
-  const { setAudio } = useAudio();
-
-  useEffect(() => {
-    const loadData = async () => {
-      const podcastData = await fetchPodcastDetails(id);
-      if (podcastData) {
-        setPodcast(podcastData);
-        const otherPodcastsData = await fetchOtherPodcasts(
-          podcastData.user_id,
-          id
-        );
-        setOtherPodcasts(otherPodcastsData);
-      } else {
-        notFound();
-      }
-    };
-    loadData();
-  }, [id]);
-
-  if (!podcast) {
-    return null; // or return a loading state
-  }
-
-  const handlePlay = () => {
-    console.log("Setting audio data:", {
-      audioUrl: podcast.audio_url,
-      podcastId: id,
-      imageUrl: podcast.image_url,
-      title: podcast.podcast_name,
-      author: podcast.users.username,
-    });
-
-    setAudio({
-      audioUrl: podcast.audio_url,
-      podcastId: id,
-      imageUrl: podcast.image_url,
-      title: podcast.podcast_name,
-      author: podcast.users.username,
-    });
-  };
+  const { data: otherPodcasts } = await getPodcastDetails(id, podcast.user_id);
 
   return (
     <div className="min-h-screen px-10 text-white pb-12">
@@ -117,19 +52,13 @@ const PodcastDetails = () => {
             />
             <span>By {podcast.users.username}</span>
           </Link>
-
+          <PlayPodcastButton podcast={podcast} />
           <p className="text-sm bg-black shadow-lg p-3 my-4 w-fit rounded-xl font-semibold flex items-center gap-6">
             AI VOICE
             <span className="text-purple-700 bg-white p-2 rounded-xl">
               {podcast.ai_voice || "Unknown"}
             </span>
           </p>
-          <button
-            className="bg-purple-700 flex items-center rounded-lg py-3 px-6 gap-3"
-            onClick={handlePlay}>
-            Play Podcast{" "}
-            <BiMicrophone className="text-lg"/>
-          </button>
         </div>
       </div>
       <div className="mt-5">
@@ -144,13 +73,13 @@ const PodcastDetails = () => {
       <div className="mt-8">
         <h4 className="text-xl font-bold">More Podcasts by this User</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-          {otherPodcasts.length > 0 ? (
-            otherPodcasts.map((podcast: any) => (
-              <Link key={podcast.id} href={`/podcasts/${podcast.id}`}>
+          {otherPodcasts && otherPodcasts.length > 0 ? (
+            otherPodcasts.map((p: any) => (
+              <Link key={p.id} href={`/podcasts/${p.id}`}>
                 <PodcastCard
-                  podcast={podcast}
-                  likes={podcast.likes?.length || 0}
-                  username={podcast.users?.username || "Unknown"}
+                  podcast={p}
+                  likes={p.likes?.length || 0}
+                  username={p.users?.username || "Unknown"}
                 />
               </Link>
             ))
@@ -161,6 +90,4 @@ const PodcastDetails = () => {
       </div>
     </div>
   );
-};
-
-export default PodcastDetails;
+}

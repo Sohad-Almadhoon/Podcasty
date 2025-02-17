@@ -23,8 +23,9 @@ export
   podcast_name: string;
   play_count: number;
   image_url?: string;
+  audio_url?: string;
   description: string;
   likes: any;
-  users: { username: string; }
-  
+  users: { username: string; avatar_url?: string; }
+
 }

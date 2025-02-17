@@ -4,14 +4,14 @@ import {
   SheetClose,
   SheetContent,
   SheetTrigger,
-} from "@/app/components/ui/sheet";
-import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
+} from "@/components/ui/sheet";
+import { AiOutlineMenu } from "react-icons/ai";
 import SidebarLinks from "./SidebarLinks";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { User } from "../types";
 import { BiSolidLogIn, BiSolidLogOut, BiSolidUserVoice } from "react-icons/bi";
 import { signInWithGoogle, signOut, getUserClient } from "@/app/lib/auth";
+import { User } from "@/app/types";
 const MobileNav = () => {
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {

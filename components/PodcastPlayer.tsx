@@ -4,11 +4,12 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 import { Progress } from "./ui/progress";
-import { formatTime } from "../lib/formatTime";
-import { cn } from "../lib/utils";
-import { useAudio } from "../providers/AudioProvider";
-import { BsForwardFill, BsPause, BsPlay, BsPlayFill, BsVolumeMute } from "react-icons/bs";
+
+import { BsPause, BsPlayFill, BsVolumeMute } from "react-icons/bs";
 import { BiFastForward, BiRewind, BiSolidVolume } from "react-icons/bi";
+import { useAudio } from "@/app/providers/AudioProvider";
+import { formatTime } from "@/app/lib/formatTime";
+import { cn } from "@/app/lib/utils";
 
 const PodcastPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);

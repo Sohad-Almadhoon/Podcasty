@@ -1,9 +1,10 @@
 //@ts-nocheck
 import { BsPlayCircleFill } from "react-icons/bs";
 import Link from "next/link";
-import supabase from "@/app/lib/supabase";
+import { createClient } from "@/app/lib/supabase";
 
 async function fetchMostPlayedPodcasts() {
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("podcasts")
     .select("id, podcast_name, play_count, users:user_id (username)")

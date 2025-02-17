@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import VoicePlayer from "./VoicePlayer";
-import { getUser } from "@/app/lib/auth";
+import { getUserClient } from "@/app/lib/auth";
+
 
 export default function PodcastForm() {
   const {
@@ -28,7 +28,7 @@ export default function PodcastForm() {
   const [userId, setUserId] = useState<string | null>(null);
   useEffect(() => {
     const fetchUserId = async () => {
-      const user = await getUser();
+      const user = await getUserClient();
       if (user) {
         setUserId(user.id);
       }
@@ -186,7 +186,7 @@ export default function PodcastForm() {
                     alt="Generated Image"
                     className="w-32 h-32 object-cover rounded-md"
                   />
-                  <VoicePlayer url={podcast.audioUrl} />
+                  {/* <VoicePlayer url={podcast.audioUrl} /> */}
                 </div>
               </div>
             </div>

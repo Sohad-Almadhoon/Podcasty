@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { Montserrat, Dancing_Script } from "next/font/google";
 import "./globals.css";
-import LeftSidebar from "./components/LeftSidebar";
 import { Suspense } from "react";
 import LoaderSpinner from "./loading";
-import PodcastPlayer from "./components/PodcastPlayer";
-import RigthSidebar from "./components/RigthSidebar";
-import MobileNav from "./components/NavMobile";
 import { AiTwotonePlayCircle } from "react-icons/ai";
 import Link from "next/link";
 import AudioProvider from "./providers/AudioProvider";
-import Logo from "./components/Logo";
+import LeftSidebar from "@/components/LeftSidebar";
+import Logo from "@/components/Logo";
+import MobileNav from "@/components/NavMobile";
+import RigthSidebar from "@/components/RigthSidebar";
+import PodcastPlayer from "@/components/PodcastPlayer";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -33,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <AudioProvider>
         <body className={`${montserrat.className}`}>
           <div className="flex bg-gradient-to-b  from-black via-purple-950 to-purple-700">
@@ -41,11 +41,10 @@ export default function RootLayout({
             <main className="flex-1">
               <div className="flex px-4 h-16 items-center justify-between md:hidden">
                 <Logo />
-                <MobileNav />
+                {/* <MobileNav /> */}
               </div>
-              <Suspense fallback={<LoaderSpinner />}>
-                <div className="flex-1">{children}</div>
-              </Suspense>
+
+              <div className="flex-1">{children}</div>
             </main>
             <RigthSidebar />
           </div>
