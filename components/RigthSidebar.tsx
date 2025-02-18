@@ -1,23 +1,7 @@
 //@ts-nocheck
 import { BsPlayCircleFill } from "react-icons/bs";
 import Link from "next/link";
-import { createClient } from "@/app/lib/supabase";
-
-async function fetchMostPlayedPodcasts() {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("podcasts")
-    .select("id, podcast_name, play_count, users:user_id (username)")
-    .order("play_count", { ascending: false })
-    .limit(5);
-
-  if (error) {
-    console.error("Error fetching most-played podcasts:", error);
-    return [];
-  }
-
-  return data;
-}
+import { fetchMostPlayedPodcasts } from "@/app/actions/podcasts.actions";
 
 export default async function RigthSidebar() {
   const mostPlayedPodcasts = await fetchMostPlayedPodcasts();

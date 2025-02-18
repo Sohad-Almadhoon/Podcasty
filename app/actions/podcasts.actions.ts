@@ -1,11 +1,12 @@
-import { createClient } from "../lib/supabase";
+import { getSupabaseAuth } from "../lib/supabase";
+
 export async function getPodcastDetails(id: string, userId?: string) {
-    const supabase= await createClient();
     try {
+        const supabaseClient = await getSupabaseAuth();
         let query;
 
         if (userId) {
-            query = supabase
+            query = supabaseClient
                 .from("podcasts")
                 .select(`
                     id,
@@ -22,7 +23,7 @@ export async function getPodcastDetails(id: string, userId?: string) {
                 .eq("user_id", userId)
                 .neq("id", id);
         } else {
-            query = supabase
+            query = supabaseClient
                 .from("podcasts")
                 .select(`
                     id,
@@ -52,3 +53,19 @@ export async function getPodcastDetails(id: string, userId?: string) {
         return { data: null, error: (error as Error).message };
     }
 }
+export async function fetchMostPlayedPodcasts() {
+    const supabaseClient = await getSupabaseAuth();
+    const { data, error } = await supabaseClient
+        .from("podcasts")
+        .select("id, podcast_name, play_count, users:user_id (username)")
+        .order("play_count", { ascending: false })
+        .limit(5);
+
+    if (error) {
+        console.error("Error fetching most-played podcasts:", error);
+        return [];
+    }
+
+    return data;
+}
+

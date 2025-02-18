@@ -2,20 +2,22 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { BiSearch } from "react-icons/bi";
-import supabase from "@/app/lib/supabase";
-import { Podcast } from "../types";
 import PodcastCard from "@/components/PodcastCard";
+import { getSupabaseAuth } from "@/app/lib/supabase";
+import { Podcast } from "@/app/types";
+import LoaderSpinner from "@/app/loading";
 
 const Podcasts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [podcasts, setPodcasts] = useState<Podcast[]>([]);
   const [loading, setLoading] = useState(true);
   const [podcastError, setPodcastError] = useState<string | null>(null);
-
+ 
   const fetchPodcasts = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase
+      const supabaseClient = await getSupabaseAuth();
+      const { data, error } = await supabaseClient
         .from("podcasts")
         .select(
           `id,
@@ -27,13 +29,18 @@ const Podcasts = () => {
           users:user_id (username)`
         )
         .ilike("podcast_name", `%${searchTerm}%`);
+      const plainData = data?.map((podcast) => ({
+        ...podcast,
+        likes: podcast.likes?.length || 0,
+        username: podcast.users?.username || "Unknown",
+      }));
 
+      setPodcasts(plainData ?? []);
       if (error) throw error;
       //@ts-ignore
-      setPodcasts(data || []);
       setPodcastError(null);
     } catch (error) {
-      setPodcastError("Error fetching podcasts. Please try again later.");
+      setPodcastError("Error fetching podcasts. Please try again later." + error.message);
     } finally {
       setLoading(false);
     }
@@ -48,13 +55,7 @@ const Podcasts = () => {
   };
 
   if (loading) {
-    return (
-      <div className="p-5 min-h-screen">
-        <div className="text-center">
-          <p className="text-white">Loading podcasts...</p>
-        </div>
-      </div>
-    );
+    return <LoaderSpinner />
   }
 
   return (

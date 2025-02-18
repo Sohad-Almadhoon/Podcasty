@@ -1,50 +1,30 @@
-"use client";
-import { signInWithGoogle, signOut } from "@/app/lib/auth";
+import { BiSolidUserVoice} from "react-icons/bi";
 import Link from "next/link";
-import React, { useState, useEffect } from "react";
-import { BiSolidLogIn, BiSolidLogOut, BiSolidUserVoice } from "react-icons/bi";
+import { getUser } from "@/app/lib/supabase";
 import SidebarLinks from "./SidebarLinks";
-import Logo from "./Logo";
-import { createClient } from "@/app/lib/supabase";
+import LogoutButton from "./buttons/LogoutButton";
+import LoginButton from "./buttons/LoginButton";
 
-const LeftSidebar = () => {
-  const [user, setUser] = useState<any | null>(null); // Using 'any' temporarily, you can define a User interface later
-
-  useEffect(() => {
-    const getUser = async () => {
-      const supabase = await createClient();
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-
-      if (session && session.user) {
-        setUser({
-          id: session.user.id,
-          avatar_url: session.user.user_metadata.avatar_url || "",
-          email: session.user.email || "",
-          username: session.user.user_metadata.full_name || "",
-        });
-      } else {
-        setUser(null); // No session, set user to null
-      }
-    };
-
-    getUser(); // Ensure to call the function
-  }, []);
+const LeftSidebar = async() => {
+  const user = await getUser();
 
   return (
     <div>
-      {user ? (
-        <div>
-          <Link href={`/profile/${user.id}`}>My Profile</Link>
-          <button onClick={signOut}>Logout</button>
-        </div>
-      ) : (
-        <button className="" onClick={signInWithGoogle}>
-          SIGN IN WITH GOOGLE
-        </button>
-      )}
+      <div className="lg:flex gap-8 flex-col lg:w-80 hidden p-8 min-h-screen">
+        <SidebarLinks />
+        {user ? (
+          <div className="flex flex-col gap-8">
+            <Link
+              href={`/profile/${user.id}`}
+              className="text-[#EDEDED] hover:text-purple-300 flex items-center gap-4 ml-5">
+              <BiSolidUserVoice /> My Profile
+            </Link>
+            <LogoutButton />
+          </div>
+        ) : (
+          <LoginButton />
+        )}
+      </div>
     </div>
   );
 };

@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { getUserClient } from "@/app/lib/auth";
+import { getUser } from "@/app/lib/supabase";
+import { createPodcast, generatePodcastContent } from "@/app/actions/upload.action";
+import { AiVoice } from "@/app/types";
 
 
 export default function PodcastForm() {
@@ -15,7 +17,7 @@ export default function PodcastForm() {
   } = useForm<{
     podcast_name: string;
     description: string;
-    ai_voice: string;
+    ai_voice: AiVoice;
     ai_prompt: string;
   }>();
 
@@ -25,10 +27,10 @@ export default function PodcastForm() {
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string>();
   useEffect(() => {
     const fetchUserId = async () => {
-      const user = await getUserClient();
+      const user = await getUser();
       if (user) {
         setUserId(user.id);
       }
@@ -38,44 +40,38 @@ export default function PodcastForm() {
   }, []);
   console.log(userId);
 
-  const generateAIContent = async (aiPrompt: string, aiVoice: string) => {
-    setLoading(true);
-    try {
-      const response = await axios.post("/api/podcasts/generate-media", {
-        ai_prompt: aiPrompt,
-        ai_voice: aiVoice,
-      });
-      setPodcast(response.data);
-    } catch (error) {
-      console.error("Error generating AI content:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+ const generateAIContent = async (aiPrompt: string, aiVoice: AiVoice) => {
+   setLoading(true);
+   try {
+     const result = await generatePodcastContent(aiPrompt, aiVoice);
+     setPodcast(result); 
+   } catch (error) {
+     console.error("Error generating AI content:", error);
+   } finally {
+     setLoading(false);
+   }
+ };
 
-  // Handle podcast creation
+  
   const onSubmit = async (data: {
     podcast_name: string;
     description: string;
     ai_voice: string;
     ai_prompt: string;
   }) => {
-    if (!podcast) return;
+   if (!podcast || !userId) return;
 
     const { ai_prompt, ...filteredData } = data;
-    console.log({
-      ...filteredData,
-      ...podcast,
-      user_id: userId,
-    });
+
     try {
-      const response = await axios.post("/api/podcasts/upload", {
+      const podcastData = await createPodcast({
         ...filteredData,
         ...podcast,
         user_id: userId,
       });
-      console.log(response);
-      router.push("/podcasts");
+
+      console.log("Podcast created successfully:", podcastData);
+      router.push("/podcasts"); // Redirect to the podcasts page
     } catch (error) {
       console.error("Error creating podcast:", error);
     }

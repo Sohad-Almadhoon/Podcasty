@@ -1,4 +1,5 @@
-import { createClient } from '@/app/lib/supabase'
+
+import { getSupabaseAuth } from '@/app/lib/supabase'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
@@ -7,8 +8,8 @@ export async function GET(request: Request) {
     const next = searchParams.get('next') ?? '/'
 
     if (code) {
-        const supabase = await createClient()
-        const { error } = await supabase.auth.exchangeCodeForSession(code)
+        const supabase = (await getSupabaseAuth()).auth;
+        const { error } = await supabase.exchangeCodeForSession(code);
         if (!error) {
             const forwardedHost = request.headers.get('x-forwarded-host') 
             const isLocalEnv = process.env.NODE_ENV === 'development'
@@ -21,5 +22,5 @@ export async function GET(request: Request) {
             }
         }
     }
-    return NextResponse.redirect(`${origin}/auth/auth-code-error`)
+    return NextResponse.redirect(`${origin}/login`)
 }

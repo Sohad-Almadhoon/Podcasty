@@ -4,7 +4,7 @@ import { HeadphonesIcon } from "lucide-react";
 import LikeButton from "@/components/buttons/LikeButton";
 import PodcastCard from "@/components/PodcastCard";
 import PlayPodcastButton from "@/components/buttons/PlayPodcastButton";
-import { getPodcastDetails } from "@/app/actions/podcasts";
+import { getPodcastDetails } from "@/app/actions/podcasts.actions";
 import { notFound } from "next/navigation";
 import LoaderSpinner from "@/app/loading";
 

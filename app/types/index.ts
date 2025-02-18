@@ -29,3 +29,14 @@ export
   users: { username: string; avatar_url?: string; }
 
 }
+export enum AiVoice {
+  Alloy = 'alloy',
+  Ash = 'ash',
+  Coral = 'coral',
+  Echo = 'echo',
+  Fable = 'fable',
+  Onyx = 'onyx',
+  Nova = 'nova',
+  Sage = 'sage',
+  Shimmer = 'shimmer'
+}

@@ -1,16 +1,11 @@
 "use client";
+import { Podcast } from "@/app/types";
 import React, { FC } from "react";
 import { BsHeartFill, BsPlayCircleFill } from "react-icons/bs";
-import { Podcast } from "../types";
 
 
-interface PodcastCardProps {
-  podcast: Podcast;
-  likes: number;
-  username: string;
-}
 
-const PodcastCard: FC<PodcastCardProps> = ({ podcast, likes, username }) => {
+const PodcastCard = ({ podcast, likes, username }:any) => {
   return (
     <div className="text-white rounded-md shadow-md overflow-hidden">
       <img

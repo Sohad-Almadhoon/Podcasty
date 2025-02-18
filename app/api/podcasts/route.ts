@@ -1,7 +1,9 @@
-import supabase from "@/app/lib/supabase";
+import { getSupabaseAuth } from '@/app/lib/supabase';
+
 import { NextResponse } from "next/server";
 
 export async function GET() {
+    const supabase = await getSupabaseAuth();
     try {
         const { data, error } = await supabase
             .from("podcasts")
