@@ -1,6 +1,6 @@
 import Link from "next/link";
-import PodcastCard from "@/components/PodcastCard";
-import {getPodcasts } from "@/app/actions/podcast.action";
+import PodcastCard from "@/components/shared/PodcastCard";
+import { getPodcasts } from "@/app/actions/podcast.action";
 
 const Podcasts = async () => {
   const podcasts = await getPodcasts();

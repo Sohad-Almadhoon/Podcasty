@@ -1,9 +1,9 @@
-import LeftSidebar from "@/components/LeftSidebar";
-import Logo from "@/components/Logo";
-import PodcastPlayer from "@/components/PodcastPlayer";
-import MobileNav from "@/components/NavMobile";
-import RigthSidebar from "@/components/RigthSidebar";
+import Logo from "@/components/shared/Logo";
+import RigthSidebar from "@/components/shared/RigthSidebar";
 import AudioProvider from "../providers/AudioProvider";
+import MobileNav from "@/components/shared/NavMobile";
+import LeftSidebar from "@/components/shared/LeftSidebar";
+import PodcastPlayer from "@/components/shared/PodcastPlayer";
 
 export default function GroupedLayout({
   children,

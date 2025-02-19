@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { fetchPodcastsByUserId, fetchUserById } from "@/app/actions/users";
-import PodcastCard from "@/components/PodcastCard";
+import PodcastCard from "@/components/shared/PodcastCard";
 import DeleteButton from "@/components/buttons/DeleteButton";
 import { getUser } from "@/app/lib/supabase";
 
@@ -9,7 +9,7 @@ const Profile = async ({ params }: { params: { id: string } }) => {
   const { data: user } = await fetchUserById(id);
   const podcasts = await fetchPodcastsByUserId(id);
   const userInfo = await getUser();
-  
+
   return (
     <div className="min-h-screen p-8 text-white">
       <h1 className="text-2xl font-bold">Welcome, {user.username}</h1>

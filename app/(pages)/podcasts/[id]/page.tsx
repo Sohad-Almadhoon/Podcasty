@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { HeadphonesIcon } from "lucide-react";
 import LikeButton from "@/components/buttons/LikeButton";
-import PodcastCard from "@/components/PodcastCard";
+import PodcastCard from "@/components/shared/PodcastCard";
 import PlayPodcastButton from "@/components/buttons/PlayPodcastButton";
 import {
   getOtherPodcasts,
@@ -76,7 +76,7 @@ export default async function PodcastDetails({
         <h4 className="text-xl font-bold">More Podcasts by this User</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
           {otherPodcasts.length > 0 ? (
-            otherPodcasts.map((podcast:Podcast) => (
+            otherPodcasts.map((podcast: Podcast) => (
               <Link href={`/podcasts/${podcast.id}`} key={podcast.id}>
                 <PodcastCard podcast={podcast} />
               </Link>

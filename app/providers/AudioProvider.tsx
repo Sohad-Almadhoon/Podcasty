@@ -3,9 +3,6 @@ import { usePathname } from "next/navigation";
 import React, { createContext, useState, useContext, useEffect } from "react";
 import { AudioContextType, AudioProps } from "../types";
 
-
-
-
 const AudioContext = createContext<AudioContextType | undefined>(undefined);
 
 const AudioProvider = ({ children }: { children: React.ReactNode }) => {
