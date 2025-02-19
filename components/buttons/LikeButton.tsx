@@ -1,4 +1,6 @@
 "use client";
+import { getLikes } from "@/app/actions/podcast.action";
+import { addLike } from "@/app/actions/server/like.action";
 import { useState, useTransition, useEffect } from "react";
 import { BsHeart, BsHeartFill } from "react-icons/bs";
 
@@ -15,16 +17,7 @@ const LikeButton = ({
 
   useEffect(() => {
     const fetchLikes = async () => {
-      const res = await fetch(
-        `http://localhost:3000/api/podcasts/${podcastId}/like?user_id=${userId}`
-      );
-
-      if (!res.ok) {
-        console.error("Failed to fetch likes:", res.statusText);
-        return;
-      }
-
-      const { data } = await res.json();
+      await getLikes(userId);
       setLikes(data.likeCount);
       setIsLiked(data.userLiked);
     };
@@ -38,20 +31,9 @@ const LikeButton = ({
       setIsLiked((prev) => !prev);
     });
 
-    const res = await fetch(
-      `http://localhost:3000/api/podcasts/${podcastId}/like`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_id: userId }),
-      }
-    );
+    await addLike(podcastId, userId);
 
-    if (!res.ok) {
-      console.error("Failed to toggle like:", res.statusText);
-    }
+  
   };
   return (
     <button

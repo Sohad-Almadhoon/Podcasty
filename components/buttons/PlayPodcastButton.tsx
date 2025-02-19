@@ -14,7 +14,7 @@ const PlayPodcastButton = ({ podcast }: { podcast: Podcast }) => {
       podcastId: podcast.id,
       imageUrl: podcast.image_url!,
       title: podcast.podcast_name,
-      author: podcast.users.username,
+      author: podcast.users[0].username,
     });
   };
   return (

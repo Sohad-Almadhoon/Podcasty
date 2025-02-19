@@ -1,15 +1,13 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-
 import { Progress } from "./ui/progress";
-
 import { BsPause, BsPlayFill, BsVolumeMute } from "react-icons/bs";
 import { BiFastForward, BiRewind, BiSolidVolume } from "react-icons/bi";
 import { useAudio } from "@/app/providers/AudioProvider";
-import { formatTime } from "@/app/lib/formatTime";
+import { formatTime } from "@/app/lib/utils";
 import { cn } from "@/app/lib/utils";
+import { play } from "@/app/actions/server/play.action";
 
 const PodcastPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -18,7 +16,6 @@ const PodcastPlayer = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const { audio } = useAudio();
-  console.log(audio);
   const togglePlayPause = () => {
     if (audioRef.current?.paused) {
       audioRef.current?.play();
@@ -78,6 +75,7 @@ const PodcastPlayer = () => {
       if (audioElement) {
         audioElement.play().then(() => {
           setIsPlaying(true);
+          play(audio.podcastId);
         });
       }
     } else {
@@ -126,7 +124,7 @@ const PodcastPlayer = () => {
         </div>
         <div className="flex items-center cursor-pointer gap-3 md:gap-6">
           <div className="flex items-center gap-1.5">
-            <BiRewind className="text-2xl"/>
+            <BiRewind className="text-2xl" onClick={rewind}/>
             <h2 className="text-12 font-bold text-white-4">-5</h2>
           </div>
           {isPlaying ? (

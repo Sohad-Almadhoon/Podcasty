@@ -7,8 +7,6 @@ export const getUser = async () => {
     const user = (await auth.getUser()).data.user;
     return user;
 }
-
-
 export async function getSupabaseAuth() {
     const cookieStore = await cookies()
 

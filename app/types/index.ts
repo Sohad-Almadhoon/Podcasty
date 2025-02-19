@@ -11,24 +11,22 @@ export interface AudioContextType {
   setAudio: React.Dispatch<React.SetStateAction<AudioProps | undefined>>;
 }
 
-export interface User {
-  id: string;
-  avatar_url: string;
-  email: string;
-  username: string;
-}
-export
-  interface Podcast {
+export interface Podcast {
   id: string;
   podcast_name: string;
-  play_count: number;
-  image_url?: string;
-  audio_url?: string;
   description: string;
-  likes: any;
-  users: { username: string; avatar_url?: string; }
-
+  image_url: string; 
+  play_count: number;
+  ai_voice: AiVoice;
+  user_id: string;
+  audio_url: string;
+  likes: { podcast_id: string }[]; 
+  users: {
+    username: string;
+    avatar_url: string;
+  }[];
 }
+
 export enum AiVoice {
   Alloy = 'alloy',
   Ash = 'ash',

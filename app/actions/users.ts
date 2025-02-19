@@ -28,7 +28,7 @@ export async function fetchPodcastsByUserId(userId: string) {
     try {
         const { data, error } = await supabase
             .from("podcasts")
-            .select("id, podcast_name, play_count, image_url, description, likes(podcast_id), users:user_id (username)")
+            .select("id, podcast_name, play_count, image_url, description, ai_voice , user_id, audio_url,likes(podcast_id), users:user_id (username,avatar_url)")
             .eq("user_id", userId);
 
         if (error) {

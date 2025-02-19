@@ -1,13 +1,14 @@
-//@ts-nocheck
 import Link from "next/link";
 import { fetchPodcastsByUserId, fetchUserById } from "@/app/actions/users";
 import PodcastCard from "@/components/PodcastCard";
 import DeleteButton from "@/components/buttons/DeleteButton";
+import { getUser } from "@/app/lib/supabase";
 
 const Profile = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
   const { data: user } = await fetchUserById(id);
   const podcasts = await fetchPodcastsByUserId(id);
+  const userInfo = await getUser();
   
   return (
     <div className="min-h-screen p-8 text-white">
@@ -30,14 +31,9 @@ const Profile = async ({ params }: { params: { id: string } }) => {
           {podcasts.map((podcast) => (
             <div key={podcast.id} className="p-4 rounded-lg relative">
               <Link key={podcast.id} href={`/podcasts/${podcast.id}`}>
-                <PodcastCard
-                  podcast={podcast}
-                  likes={podcast.likes?.length || 0}
-                  username={podcast.users?.username || "Unknown"}
-                />
+                <PodcastCard podcast={podcast} />
               </Link>
-              <DeleteButton podcast={ podcast} />
-              
+              {podcast.id == userInfo?.id && <DeleteButton podcast={podcast} />}
             </div>
           ))}
         </ul>

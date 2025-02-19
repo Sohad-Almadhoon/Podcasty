@@ -1,31 +1,30 @@
 "use server";
+import { headers } from "next/headers";
 import { getSupabaseAuth } from "./supabase";
+import { redirect } from "next/navigation";
 
 export const signInWithGoogle = async () => {
-    console.log(process.env.NEXT_PUBLIC_BASE_URL)
-    try {
-        const { data, error } = await (await getSupabaseAuth()).auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`
-            }
-        });
-        if (error) throw error;
-        return { data, error: null };
-    }
-    catch (error) {
-        return { error };
+
+    const origin = (await headers()).get('origin');
+    const { data, error } = await (await getSupabaseAuth()).auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+            redirectTo: `${origin}`
+        }
+    });
+    if (error) {
+        console.log(error);
+    } else {
+        return redirect(data.url);
     }
 
 }
 
 export const signOut = async () => {
-    try {
-        const { error } = await (await getSupabaseAuth()).auth.signOut();
-        if (error) throw error;
-        return { error: null };
-    }
-    catch (error) {
-        return { error };
+    const { error } = await (await getSupabaseAuth()).auth.signOut();
+    if (error) {
+        console.log(error);
+    } else {
+        return redirect('/login');
     }
 }

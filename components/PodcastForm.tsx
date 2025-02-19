@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { getUser } from "@/app/lib/supabase";
-import { createPodcast, generatePodcastContent } from "@/app/actions/upload.action";
+import {
+  createPodcast,
+  generatePodcastContent,
+} from "@/app/actions/server/upload.action";
 import { AiVoice } from "@/app/types";
-
 
 export default function PodcastForm() {
   const {
@@ -40,26 +42,25 @@ export default function PodcastForm() {
   }, []);
   console.log(userId);
 
- const generateAIContent = async (aiPrompt: string, aiVoice: AiVoice) => {
-   setLoading(true);
-   try {
-     const result = await generatePodcastContent(aiPrompt, aiVoice);
-     setPodcast(result); 
-   } catch (error) {
-     console.error("Error generating AI content:", error);
-   } finally {
-     setLoading(false);
-   }
- };
+  const generateAIContent = async (aiPrompt: string, aiVoice: AiVoice) => {
+    setLoading(true);
+    try {
+      const result = await generatePodcastContent(aiPrompt, aiVoice);
+      setPodcast(result);
+    } catch (error) {
+      console.error("Error generating AI content:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  
   const onSubmit = async (data: {
     podcast_name: string;
     description: string;
     ai_voice: string;
     ai_prompt: string;
   }) => {
-   if (!podcast || !userId) return;
+    if (!podcast || !userId) return;
 
     const { ai_prompt, ...filteredData } = data;
 

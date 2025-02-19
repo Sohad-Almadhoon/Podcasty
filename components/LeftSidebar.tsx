@@ -1,15 +1,16 @@
-import { BiSolidUserVoice} from "react-icons/bi";
+import { BiLogIn,  BiSolidUserVoice} from "react-icons/bi";
 import Link from "next/link";
 import { getUser } from "@/app/lib/supabase";
 import SidebarLinks from "./SidebarLinks";
 import LogoutButton from "./buttons/LogoutButton";
-import LoginButton from "./buttons/LoginButton";
+import Logo from "./Logo";
 
 const LeftSidebar = async() => {
   const user = await getUser();
-
+  console.log(user)
   return (
     <div>
+      <Logo/>
       <div className="lg:flex gap-8 flex-col lg:w-80 hidden p-8 min-h-screen">
         <SidebarLinks />
         {user ? (
@@ -19,10 +20,14 @@ const LeftSidebar = async() => {
               className="text-[#EDEDED] hover:text-purple-300 flex items-center gap-4 ml-5">
               <BiSolidUserVoice /> My Profile
             </Link>
-            <LogoutButton />
+          <LogoutButton />
           </div>
         ) : (
-          <LoginButton />
+          <Link
+            href={`/login`}
+            className="text-[#EDEDED] hover:text-purple-300 flex items-center gap-4 ml-5">
+            <BiLogIn /> Login
+          </Link>
         )}
       </div>
     </div>

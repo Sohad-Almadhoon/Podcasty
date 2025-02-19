@@ -6,12 +6,11 @@ const LoginPage = async () => {
   const user = await getUser();
 
   if (user) {
-    redirect("/"); 
+    redirect("/podcasts");
   }
 
   return (
-    <div className="min-h-screen border w-full flex items-center mx-auto bg-gradient-to-b from-black via-purple-950 to-purple-700">
-      <img src="/images/google.jpg" alt="" />
+    <div className="min-h-screen border w-full flex items-center justify-center mx-auto bg-gradient-to-b from-black via-purple-950 to-purple-700">
       <LoginButton />
     </div>
   );

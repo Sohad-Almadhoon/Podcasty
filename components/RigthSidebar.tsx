@@ -1,7 +1,6 @@
-//@ts-nocheck
 import { BsPlayCircleFill } from "react-icons/bs";
 import Link from "next/link";
-import { fetchMostPlayedPodcasts } from "@/app/actions/podcasts.actions";
+import { fetchMostPlayedPodcasts } from "@/app/actions/podcast.action";
 
 export default async function RigthSidebar() {
   const mostPlayedPodcasts = await fetchMostPlayedPodcasts();
@@ -20,7 +19,7 @@ export default async function RigthSidebar() {
                 {podcast.podcast_name}
               </span>
 
-              <p className="text-xs">{podcast.users.username || "Unknown"}</p>
+              <p className="text-xs">{podcast.users[0].username || "Unknown"}</p>
             </div>
             <div className="text-right">
               <div className="flex gap-1 flex-col">
