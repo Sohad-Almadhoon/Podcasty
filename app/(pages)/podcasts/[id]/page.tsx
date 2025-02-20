@@ -9,15 +9,16 @@ import {
 } from "@/app/actions/podcast.action";
 import { notFound } from "next/navigation";
 import { Podcast } from "@/app/types";
+import LoaderSpinner from "../loading";
 
 export default async function PodcastDetails({
   params,
 }: {
   params: { id: string };
 }) {
-  const { id } = params;
+  const { id } = await params;
   if (!id) return notFound();
-
+  
   try {
     const [podcastDetails, otherPodcasts] = await Promise.all([
       getPodcastDetails(id),
@@ -28,10 +29,10 @@ export default async function PodcastDetails({
       ),
     ]);
 
-    if (!podcastDetails || !podcastDetails.podcast) return notFound();
+    if (!podcastDetails || !podcastDetails.podcast) return <LoaderSpinner/>;
 
     const { podcast, error } = podcastDetails;
-    console.log(podcast.likes.length);
+
     if (error || !podcast) return notFound();
     return (
       <div className="min-h-screen px-10 text-white pb-12">
@@ -52,7 +53,7 @@ export default async function PodcastDetails({
                 {podcast.play_count || 0} <HeadphonesIcon />
               </span>
               {podcast.users && (
-                <LikeButton podcastId={id} userId={podcast.user_id} />
+                <LikeButton podcastId={id} userId={podcast.user_id}  />
               )}
             </div>
             <Link

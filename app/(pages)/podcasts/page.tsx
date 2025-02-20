@@ -2,12 +2,13 @@ import Link from "next/link";
 import PodcastCard from "@/components/shared/PodcastCard";
 import { getPodcasts } from "@/app/actions/podcast.action";
 import { Podcast } from "@/app/types";
+import LoaderSpinner from "./loading";
 
 
 const Podcasts = async () => {
   const podcasts: Podcast[] | null = await getPodcasts();
   console.log(podcasts);
-  if (!podcasts) return <div>Loading...</div>;
+  if (!podcasts) return <LoaderSpinner />;
   return (
     <div className="p-5 min-h-screen">
       <h1 className="text-xl font-bold my-4 text-white">

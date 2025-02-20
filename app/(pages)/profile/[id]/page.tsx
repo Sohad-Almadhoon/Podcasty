@@ -6,11 +6,13 @@ import {
 import PodcastCard from "@/components/shared/PodcastCard";
 import DeleteButton from "@/components/buttons/DeleteButton";
 import { getUser } from "@/app/lib/supabase";
+import LoaderSpinner from "./loading";
 
 const Profile = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const { data: user } = await fetchUserById(id);
   const podcasts = await fetchPodcastsByUserId(id);
+  if(!podcasts) return <LoaderSpinner />;
   const userInfo = await getUser();
   return (
     <div className="min-h-screen p-8 text-white">

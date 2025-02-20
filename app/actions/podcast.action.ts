@@ -88,36 +88,41 @@ export async function fetchMostPlayedPodcasts() {
 
 export const getLikes = async (podcastId: string, user_id: string) => {
     const supabase = await getSupabaseAuth();
-
+    console.log(podcastId, user_id);    
     try {
+        // Fetch total likes count
         const { count, error: countError } = await supabase
             .from("likes")
-            .select("*", { count: "exact", head: true })
+            .select("*", { count: "exact" })
             .eq("podcast_id", podcastId);
 
         if (countError) {
             console.error("Error fetching like count:", countError);
+            return { count: 0, userLiked: false }; // Return default values on error
         }
 
+        // Check if the user has liked the podcast
         const { data: existingLike, error: likeError } = await supabase
             .from("likes")
             .select("id")
             .eq("podcast_id", podcastId)
             .eq("user_id", user_id)
-            .single();
+            .maybeSingle(); // Avoid throwing errors
 
-        if (likeError && likeError.code !== "PGRST116") {
+        if (likeError) {
             console.error("Error checking user like:", likeError);
         }
-
-        const userLiked = !!existingLike;
-
-        return { count, userLiked };
+        console.log(count, existingLike);
+        return {
+            count: Number(count) || 0, 
+            userLiked: Boolean(existingLike),
+        };
     } catch (error) {
         console.error("Unexpected error:", error);
         return { count: 0, userLiked: false };
     }
 };
+
 
 export async function getPodcasts(): Promise<Podcast[] | null> {
     try {

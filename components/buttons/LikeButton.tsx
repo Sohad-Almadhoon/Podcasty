@@ -14,24 +14,37 @@ const LikeButton = ({
   const [likes, setLikes] = useState(0);
   const [isPending, startTransition] = useTransition();
   const [isLiked, setIsLiked] = useState(false);
- console.log(likes)
+
   useEffect(() => {
     const fetchLikes = async () => {
       const data = await getLikes(podcastId, userId);
-      setLikes(data.count ?? 0);
-      setIsLiked(data.userLiked);
+      console.log(data);
+      if (data) {
+        setLikes(data.count ?? 0);
+        setIsLiked(data.userLiked);
+      }
     };
 
     fetchLikes();
   }, [podcastId, userId]);
 
   const toggleLike = async () => {
-    startTransition(() => {
-      setLikes((prev) => (isLiked ? prev - 1 : prev + 1));
-      setIsLiked((prev) => !prev);
-    });
+    const newLikedState = !isLiked;
 
-    await addLike(podcastId, userId);
+    // Optimistically update the UI
+    setIsLiked(newLikedState);
+    setLikes((prev) => (newLikedState ? prev + 1 : prev - 1));
+
+    // Perform the server update
+    startTransition(async () => {
+      const updatedData = await addLike(podcastId, userId);
+
+      // Ensure the server state is correctly reflected
+      if (updatedData) {
+        setLikes(updatedData.count ?? 0);
+        setIsLiked(updatedData.liked ?? false);
+      }
+    });
   };
 
   return (

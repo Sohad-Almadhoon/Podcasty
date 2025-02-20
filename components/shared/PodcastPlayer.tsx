@@ -16,7 +16,6 @@ const PodcastPlayer = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const { audio } = useAudio();
-  console.log(audio);
   const togglePlayPause = () => {
     if (audioRef.current?.paused) {
       audioRef.current?.play();
