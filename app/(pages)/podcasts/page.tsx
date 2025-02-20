@@ -1,9 +1,11 @@
 import Link from "next/link";
 import PodcastCard from "@/components/shared/PodcastCard";
 import { getPodcasts } from "@/app/actions/podcast.action";
+import { Podcast } from "@/app/types";
+
 
 const Podcasts = async () => {
-  const podcasts = await getPodcasts();
+  const podcasts: Podcast[] | null = await getPodcasts();
   console.log(podcasts);
   if (!podcasts) return <div>Loading...</div>;
   return (

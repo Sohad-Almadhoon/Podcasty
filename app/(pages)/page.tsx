@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { getUser } from "../lib/supabase";
 
-export default function Home() {
-
+export default async function Home() {
+ console.log(await getUser())
   return (
     <main className="container mx-auto px-6 py-12">
       <section className="flex flex-col md:flex-row justify-between items-center mt-12">

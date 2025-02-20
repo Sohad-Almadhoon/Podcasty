@@ -6,14 +6,15 @@ import { redirect } from "next/navigation";
 export const signInWithGoogle = async () => {
 
     const origin = (await headers()).get('origin');
+    console.log(origin , 'origin'); 
     const { data, error } = await (await getSupabaseAuth()).auth.signInWithOAuth({
         provider: 'google',
         options: {
-            redirectTo: `${origin}`
+            redirectTo: `${origin}/api/auth/callback?next=/podcasts`
         }
     });
     if (error) {
-        console.log(error);
+        console.log(error , 'ggogle');
     } else {
         return redirect(data.url);
     }

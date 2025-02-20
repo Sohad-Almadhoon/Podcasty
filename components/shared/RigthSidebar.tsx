@@ -19,7 +19,7 @@ export default async function RigthSidebar() {
                 {podcast.podcast_name}
               </span>
 
-              <p className="text-xs">{podcast.users[0].username || "Unknown"}</p>
+              <p className="text-xs">{podcast.users?.username|| "Unknown"}</p>
             </div>
             <div className="text-right">
               <div className="flex gap-1 flex-col">

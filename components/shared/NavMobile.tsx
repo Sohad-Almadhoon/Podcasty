@@ -7,10 +7,10 @@ import {
 import { AiOutlineMenu } from "react-icons/ai";
 import SidebarLinks from "./SidebarLinks";
 import Link from "next/link";
-import { BiSolidUserVoice } from "react-icons/bi";
+import { BiLogIn, BiSolidUserVoice } from "react-icons/bi";
 import { getUser } from "@/app/lib/supabase";
-import LogoutButton from "./buttons/LogoutButton";
-import LoginButton from "./buttons/LoginButton";
+import LogoutButton from "../buttons/LogoutButton";
+
 
 const MobileNav = async () => {
   const user = await getUser();
@@ -35,7 +35,11 @@ const MobileNav = async () => {
                   <LogoutButton />
                 </div>
               ) : (
-                <LoginButton />
+                <Link
+                  href={`/login`}
+                  className="text-[#EDEDED] hover:text-purple-300 flex items-center gap-4 ml-5">
+                  <BiLogIn /> Login
+                </Link>
               )}
             </div>
           </SheetClose>

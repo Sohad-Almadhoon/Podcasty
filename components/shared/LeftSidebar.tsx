@@ -2,12 +2,13 @@ import { BiLogIn,  BiSolidUserVoice} from "react-icons/bi";
 import Link from "next/link";
 import { getUser } from "@/app/lib/supabase";
 import SidebarLinks from "./SidebarLinks";
-import LogoutButton from "./buttons/LogoutButton";
+
 import Logo from "./Logo";
+import LogoutButton from "../buttons/LogoutButton";
 
 const LeftSidebar = async() => {
   const user = await getUser();
-  console.log(user)
+  
   return (
     <div>
       <Logo/>

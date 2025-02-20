@@ -15,26 +15,19 @@ export interface Podcast {
   id: string;
   podcast_name: string;
   description: string;
-  image_url: string; 
+  image_url: string;
   play_count: number;
   ai_voice: AiVoice;
   user_id: string;
   audio_url: string;
-  likes: { podcast_id: string }[]; 
+  likes: { podcast_id: string }[];
   users: {
     username: string;
     avatar_url: string;
-  }[];
+  } | {
+    username: string;
+    avatar_url: string;
+  }[];  
 }
 
-export enum AiVoice {
-  Alloy = 'alloy',
-  Ash = 'ash',
-  Coral = 'coral',
-  Echo = 'echo',
-  Fable = 'fable',
-  Onyx = 'onyx',
-  Nova = 'nova',
-  Sage = 'sage',
-  Shimmer = 'shimmer'
-}
+export type AiVoice = "alloy" | "ash" | "coral" | "echo" | "fable" | "onyx" | "nova" | "sage" | "shimmer";

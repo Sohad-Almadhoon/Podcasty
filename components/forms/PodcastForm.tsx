@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { getUser } from "@/app/lib/supabase";
 import {
   createPodcast,
@@ -23,13 +22,14 @@ export default function PodcastForm() {
     ai_prompt: string;
   }>();
 
-  const [podcast, setPodcast] = useState<{
+  const [generatedPodcast, setGeneratedPodcast] = useState<{
     imageUrl: string;
     audioUrl: string;
   } | null>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [userId, setUserId] = useState<string>();
+  const [userId, setUserId] = useState<string | null>(null);
+
   useEffect(() => {
     const fetchUserId = async () => {
       const user = await getUser();
@@ -40,15 +40,26 @@ export default function PodcastForm() {
 
     fetchUserId();
   }, []);
-  console.log(userId);
 
   const generateAIContent = async (aiPrompt: string, aiVoice: AiVoice) => {
     setLoading(true);
     try {
+    
       const result = await generatePodcastContent(aiPrompt, aiVoice);
-      setPodcast(result);
+      if (result.success) {
+        setGeneratedPodcast({
+          imageUrl: result.imageUrl!,
+          audioUrl: result.audioUrl!,
+        });
+      } else {
+        console.error("Error generating AI content:", result.error);
+        alert(
+          "There was an error generating the AI content. Please try again."
+        );
+      }
     } catch (error) {
       console.error("Error generating AI content:", error);
+      alert("There was an error generating the AI content. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -60,14 +71,19 @@ export default function PodcastForm() {
     ai_voice: string;
     ai_prompt: string;
   }) => {
-    if (!podcast || !userId) return;
+    if (!generatedPodcast || !userId) return;
 
     const { ai_prompt, ...filteredData } = data;
 
     try {
+      console.log({
+        ...filteredData,
+        ...generatedPodcast,
+        user_id: userId,
+      });
       const podcastData = await createPodcast({
         ...filteredData,
-        ...podcast,
+        ...generatedPodcast,
         user_id: userId,
       });
 
@@ -75,6 +91,7 @@ export default function PodcastForm() {
       router.push("/podcasts"); // Redirect to the podcasts page
     } catch (error) {
       console.error("Error creating podcast:", error);
+      alert("There was an error creating the podcast. Please try again.");
     }
   };
 
@@ -106,20 +123,22 @@ export default function PodcastForm() {
             <select
               {...register("ai_voice", { required: "Please select a voice" })}
               className="border border-gray-700 bg-gray-900 p-2 w-full rounded-md focus:ring-2 focus:ring-purple-500 outline-none">
-              <option value="Alloy">Alloy</option>
-              <option value="Coral">Coral</option>
-              <option value="Echo">Echo</option>
-              <option value="Fable">Fable</option>
-              <option value="Onyx">Onyx</option>
-              <option value="Nova">Nova</option>
-              <option value="Shimmer">Shimmer</option>
+              <option value="alloy">Alloy</option>
+              <option value="coral">Coral</option>
+              <option value="echo">Echo</option>
+              <option value="fable">Fable</option>
+              <option value="onyx">Onyx</option>
+              <option value="nova">Nova</option>
+              <option value="shimmer">Shimmer</option>
             </select>
+
             {errors.ai_voice && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.ai_voice.message}
               </p>
             )}
           </div>
+
           <div>
             <label className="block font-medium mb-1">Description</label>
             <textarea
@@ -158,14 +177,7 @@ export default function PodcastForm() {
           <button
             type="button"
             onClick={() =>
-              generateAIContent(
-                (
-                  document.querySelector(
-                    "textarea[name='ai_prompt']"
-                  ) as HTMLTextAreaElement
-                )?.value || "",
-                getValues("ai_voice")
-              )
+              generateAIContent(getValues("ai_prompt"), getValues("ai_voice"))
             }
             className="w-full bg-purple-800 hover:bg-purple-600 transition px-4 py-2 rounded-md font-medium text-white"
             disabled={loading}>
@@ -173,31 +185,35 @@ export default function PodcastForm() {
           </button>
 
           {/* AI Content Display */}
-          {podcast && (
+          {generatedPodcast && (
             <div className="mt-6">
               <h2 className="text-lg font-semibold mb-2">Generated Content</h2>
               <div className="space-y-4">
                 <div className="flex items-center space-x-4">
                   <img
-                    src={podcast.imageUrl}
+                    src={generatedPodcast.imageUrl}
                     alt="Generated Image"
                     className="w-32 h-32 object-cover rounded-md"
                   />
-                  {/* <VoicePlayer url={podcast.audioUrl} /> */}
+                  <audio
+                    src={generatedPodcast.audioUrl}
+                    controls
+                    className="w-full"
+                  />
                 </div>
               </div>
             </div>
           )}
 
           {/* Podcast Generation */}
-          {podcast ? (
+          {generatedPodcast ? (
             <button
               type="submit"
               className="w-full bg-purple-700 hover:bg-purple-600 transition px-4 py-2 rounded-md font-medium text-white">
               Generate Podcast
             </button>
           ) : (
-            <p className=" text-center px-4 py-2 rounded-md font-medium text-white">
+            <p className="text-center px-4 py-2 rounded-md font-medium text-white">
               Waiting for AI Content...
             </p>
           )}

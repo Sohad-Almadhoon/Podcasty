@@ -1,18 +1,19 @@
 "use server";
 import { getSupabaseAuth } from "@/app/lib/supabase";
 
-export const deletePodcast = async (id: string) => {
+export async function deletePodcast(formData: FormData): Promise<void> {
+    const podcastId = formData.get("podcastId") as string;
     const supabase = await getSupabaseAuth();
-
     try {
         const { error } = await supabase
-            .from('podcasts')
+            .from("podcasts")
             .delete()
-            .eq('id', id);
+            .eq("id", podcastId);
 
-        if (error) throw error;
-       
+        if (error) {
+            throw new Error(error.message);
+        }
     } catch (error) {
-       
+        console.error("Error deleting podcast:", error);
     }
 }

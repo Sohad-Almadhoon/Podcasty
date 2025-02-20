@@ -14,11 +14,11 @@ const LikeButton = ({
   const [likes, setLikes] = useState(0);
   const [isPending, startTransition] = useTransition();
   const [isLiked, setIsLiked] = useState(false);
-
+ console.log(likes)
   useEffect(() => {
     const fetchLikes = async () => {
-      await getLikes(userId);
-      setLikes(data.likeCount);
+      const data = await getLikes(podcastId, userId);
+      setLikes(data.count ?? 0);
       setIsLiked(data.userLiked);
     };
 
@@ -32,12 +32,11 @@ const LikeButton = ({
     });
 
     await addLike(podcastId, userId);
-
-  
   };
+
   return (
     <button
-      onClick={() => startTransition(toggleLike)}
+      onClick={toggleLike}
       className="flex gap-1 items-center text-sm transition-all duration-200"
       disabled={isPending}>
       {likes} {isLiked ? <BsHeartFill className="text-red-500" /> : <BsHeart />}

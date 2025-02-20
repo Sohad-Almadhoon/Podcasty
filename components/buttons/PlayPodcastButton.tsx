@@ -8,13 +8,14 @@ import { BiMicrophone } from "react-icons/bi";
 const PlayPodcastButton = ({ podcast }: { podcast: Podcast }) => {
   const { setAudio } = useAudio();
 
+
   const handlePlay = () => {
     setAudio({
       audioUrl: podcast.audio_url,
       podcastId: podcast.id,
       imageUrl: podcast.image_url!,
       title: podcast.podcast_name,
-      author: podcast.users[0].username,
+      author: podcast.users.username,
     });
   };
   return (

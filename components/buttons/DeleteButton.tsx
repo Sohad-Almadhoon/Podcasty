@@ -1,16 +1,14 @@
-"use client";
-import { deletePodcast } from "@/app/actions/users";
-import { Podcast } from "@/app/types";
-import React from "react";
 import { AiFillDelete } from "react-icons/ai";
+import { deletePodcast } from "@/app/actions/server/podcast.action";
 
 interface DeleteButtonProps {
-  podcast: Podcast;
+  podcastId: string;
 }
 
-const DeleteButton = ({ podcast }: DeleteButtonProps) => {
+const DeleteButton = ({ podcastId }: DeleteButtonProps) => {
   return (
-    <form action={() => deletePodcast(podcast.id)}>
+    <form action={deletePodcast} method="POST">
+      <input type="hidden" name="podcastId" value={podcastId} />
       <button
         type="submit"
         className="mt-3 p-2 absolute top-5 right-5 bg-purple-500 text-white rounded-full flex items-center gap-1 hover:bg-red-700">

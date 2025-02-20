@@ -7,7 +7,7 @@ const LogoutButton = () => {
     <form action={signOut}>
       <button
         className="flex items-center justify-center w-full h-12 text-white bg-purple-600 rounded-lg">
-       "Logout"
+       Logout
       </button>
     </form>
   );
