@@ -1,14 +1,16 @@
 import Link from "next/link";
 import { getUser } from "../lib/supabase";
+import LoaderSpinner from "./podcasts/loading";
 
 export default async function Home() {
- console.log(await getUser())
+const user = await getUser();
+if (!user) return <LoaderSpinner />;
   return (
     <main className="container mx-auto px-6 py-12">
       <section className="flex flex-col md:flex-row justify-between items-center mt-12">
         <div className="md:text-left flex-1 gap-5 p-1">
           <h1 className="lg:text-4xl text-3xl font-bold text-[#EDEDED]">
-            Welcome to Podcasty!
+            Welcome ${user.user_metadata.full_name} to Podcasty! 
           </h1>
           <p className="mt-4 text-[#EDEDED] lg:max-w-sm lg:text-sm text-xs text-left">
             AI Podcast is your gateway to seamless, AI-generated storytelling.

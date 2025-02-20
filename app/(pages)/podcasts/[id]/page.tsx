@@ -34,6 +34,8 @@ export default async function PodcastDetails({
     const { podcast, error } = podcastDetails;
 
     if (error || !podcast) return notFound();
+ 
+
     return (
       <div className="min-h-screen px-10 text-white pb-12">
         <h1 className="text-3xl font-bold my-5">
