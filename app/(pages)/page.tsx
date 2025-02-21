@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getUser } from "../lib/supabase";
 import LoaderSpinner from "./podcasts/loading";
+import Image from "next/image";
 
 export default async function Home() {
 const user = await getUser();
@@ -10,7 +11,11 @@ if (!user) return <LoaderSpinner />;
       <section className="flex flex-col md:flex-row justify-between items-center mt-12">
         <div className="md:text-left flex-1 gap-5 p-1">
           <h1 className="lg:text-4xl text-3xl font-bold text-[#EDEDED]">
-            Welcome ${user.user_metadata.full_name} to Podcasty! 
+            Welcome{" "}
+            <span className="text-purple-600">
+              {user.user_metadata.full_name}
+            </span>{" "}
+            to Podcasty!
           </h1>
           <p className="mt-4 text-[#EDEDED] lg:max-w-sm lg:text-sm text-xs text-left">
             AI Podcast is your gateway to seamless, AI-generated storytelling.
@@ -21,11 +26,12 @@ if (!user) return <LoaderSpinner />;
             voices.
           </p>
         </div>
-        <div className="flex-1">
-          <img
+        <div className="flex-1 lg:mt-0 mt-6">
+          <Image
             src="/images/3.svg"
             alt="Podcast illustration"
-            className="lg:h-[500px] h-96 mt-5 lg:mt-0"
+            width={400}
+            height={200}
           />
         </div>
       </section>
@@ -43,20 +49,23 @@ if (!user) return <LoaderSpinner />;
           the future of podcasting with AI-driven innovation!
         </p>
         <div className="mt-10 grid grid-cols-3 items-center lg:gap-0 gap-5">
-          <img
+          <Image
             src="/images/2.svg"
             alt="Podcast concept illustration"
-            className="lg:h-48 h-42 w-full"
+            width={500}
+            height={200}
           />
-          <img
+          <Image
             src="/images/7.svg"
             alt="Podcast concept illustration"
-            className="lg:h-48 h-42 w-full"
+            width={500}
+            height={200}
           />
-          <img
+          <Image
             src="/images/4.svg"
             alt="Podcast concept illustration"
-            className="lg:h-48 h-42 w-full"
+            width={500}
+            height={200}
           />
         </div>
       </section>

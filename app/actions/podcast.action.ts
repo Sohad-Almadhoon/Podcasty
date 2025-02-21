@@ -1,3 +1,4 @@
+"use server";
 import { getSupabaseAuth } from "../lib/supabase";
 import { Podcast } from "../types";
 
@@ -74,7 +75,7 @@ export async function fetchMostPlayedPodcasts() {
     const supabaseClient = await getSupabaseAuth();
     const { data, error } = await supabaseClient
         .from("podcasts")
-        .select("id, podcast_name, play_count, users:user_id (username)")
+        .select("id, podcast_name, play_count, users:user_id (username,avatar_url)")
         .order("play_count", { ascending: false })
         .limit(5);
 
@@ -124,7 +125,8 @@ export const getLikes = async (podcastId: string, userId: string) => {
 
 
 
-export async function getPodcasts(): Promise<Podcast[] | null> {
+export async function getPodcasts(query?: string): Promise<Podcast[]> {
+
     try {
         const supabase = await getSupabaseAuth();
         const { data, error } = await supabase.from("podcasts").select(`
@@ -138,13 +140,14 @@ export async function getPodcasts(): Promise<Podcast[] | null> {
                 user_id,    
                 users:user_id (username, avatar_url),
                 likes(podcast_id)
-            `);
+            `).ilike("podcast_name", `${query}`);
         if (error) {
             throw new Error(error.message);
         }
         return data;
+        // i wanna try return simple object and add user server directive
     } catch (error) {
         console.error("Error fetching podcasts:", error);
-        return null;
+        return [];
     }
 }

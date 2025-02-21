@@ -10,7 +10,7 @@ const LeftSidebar = async() => {
   const user = await getUser();
   
   return (
-    <div>
+    <div className="lg:flex hidden flex-col lg:w-80 min-h-screen">
       <Logo/>
       <div className="lg:flex gap-8 flex-col lg:w-80 hidden p-8 min-h-screen">
         <SidebarLinks />

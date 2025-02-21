@@ -4,7 +4,7 @@ const LoginButton = () => {
 
   return (
     <form action={signInWithGoogle}>
-      <button className="flex items-center justify-center w-full text-3xl  text-white bg-purple-600 rounded-lg px-10 py-4">
+      <button className="flex items-center justify-center w-full text-3xl  text-white bg-purple-600 rounded-lg px-10 py-2">
         Login with Google
       </button>
     </form>

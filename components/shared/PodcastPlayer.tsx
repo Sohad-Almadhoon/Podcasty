@@ -8,6 +8,7 @@ import { formatTime } from "@/app/lib/utils";
 import { cn } from "@/app/lib/utils";
 import { play } from "@/app/actions/server/play.action";
 import { Progress } from "../ui/progress";
+import Image from "next/image";
 
 const PodcastPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -113,8 +114,18 @@ const PodcastPlayer = () => {
         />
         <div className="flex items-center gap-4 max-md:hidden">
           <Link href={`/podcasts/${audio?.podcastId}`}>
-            <img src={audio?.imageUrl} alt="" className="h-10 w-10"/>
-          </Link>
+            <div className="relative size-14 overflow-hidden shadow-lg rounded-full">
+              <Image
+                src={
+                  audio?.imageUrl && audio.imageUrl.trim() !== ""
+                    ? audio.imageUrl
+                    : "/images/1.jpeg"
+                }
+                alt="Podcast Cover"
+                fill
+              />
+            </div>
+          </Link> 
           <div className="flex w-[160px] flex-col">
             <h2 className="text-14 truncate font-semibold text-white-1">
               {audio?.title}
@@ -124,13 +135,13 @@ const PodcastPlayer = () => {
         </div>
         <div className="flex items-center cursor-pointer gap-3 md:gap-6">
           <div className="flex items-center gap-1.5">
-            <BiRewind className="text-2xl" onClick={rewind}/>
+            <BiRewind className="text-2xl" onClick={rewind} />
             <h2 className="text-12 font-bold text-white-4">-5</h2>
           </div>
           {isPlaying ? (
-            <BsPause onClick={togglePlayPause} className="text-2xl"/>
+            <BsPause onClick={togglePlayPause} className="text-2xl" />
           ) : (
-            <BsPlayFill onClick={togglePlayPause} className="text-2xl"/>
+            <BsPlayFill onClick={togglePlayPause} className="text-2xl" />
           )}
           <div className="flex items-center gap-1.5">
             <h2 className="text-12 font-bold text-white-4">+5</h2>

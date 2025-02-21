@@ -8,6 +8,7 @@ import {
   generatePodcastContent,
 } from "@/app/actions/server/upload.action";
 import { AiVoice } from "@/app/types";
+import Image from "next/image";
 
 export default function PodcastForm() {
   const {
@@ -190,11 +191,15 @@ export default function PodcastForm() {
               <h2 className="text-lg font-semibold mb-2">Generated Content</h2>
               <div className="space-y-4">
                 <div className="flex items-center space-x-4">
-                  <img
-                    src={generatedPodcast.imageUrl}
-                    alt="Generated Image"
-                    className="w-32 h-32 object-cover rounded-md"
-                  />
+                  <div className="size-32 relative rounded-md overflow-hidden">
+                    <Image
+                      src={generatedPodcast.imageUrl}
+                      alt="Generated Image"
+                      fill
+                      objectFit="cover" 
+                      unoptimized
+                    />
+                  </div>
                   <audio
                     src={generatedPodcast.audioUrl}
                     controls

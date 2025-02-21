@@ -7,23 +7,27 @@ import PodcastCard from "@/components/shared/PodcastCard";
 import DeleteButton from "@/components/buttons/DeleteButton";
 import { getUser } from "@/app/lib/supabase";
 import LoaderSpinner from "./loading";
+import Image from "next/image";
 
 const Profile = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
   const { data: user } = await fetchUserById(id);
   const podcasts = await fetchPodcastsByUserId(id);
-  if(!podcasts) return <LoaderSpinner />;
+  if (!podcasts) return <LoaderSpinner />;
   const userInfo = await getUser();
   return (
     <div className="min-h-screen p-8 text-white">
       <h1 className="text-2xl font-bold">Welcome, {user.username}</h1>
 
       <div className="flex items-center gap-4 my-4 mb-12">
-        <img
-          src={user.avatar_url || "/images/1.jpeg"}
-          alt="profile img"
-          className="w-16 h-16 rounded-full"
-        />
+        <div className="relative size-16 rounded-full overflow-hidden">
+          <Image
+            src={user.avatar_url || "/images/1.jpeg"}
+            alt="profile img"
+            unoptimized
+            fill
+          />
+        </div>
 
         <span>{user.email}</span>
       </div>

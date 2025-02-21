@@ -10,6 +10,7 @@ import {
 import { notFound } from "next/navigation";
 import { Podcast } from "@/app/types";
 import LoaderSpinner from "../loading";
+import Image from "next/image";
 
 export default async function PodcastDetails({
   params,
@@ -18,7 +19,7 @@ export default async function PodcastDetails({
 }) {
   const { id } = await params;
   if (!id) return notFound();
-  
+
   try {
     const [podcastDetails, otherPodcasts] = await Promise.all([
       getPodcastDetails(id),
@@ -29,12 +30,11 @@ export default async function PodcastDetails({
       ),
     ]);
 
-    if (!podcastDetails || !podcastDetails.podcast) return <LoaderSpinner/>;
+    if (!podcastDetails || !podcastDetails.podcast) return <LoaderSpinner />;
 
     const { podcast, error } = podcastDetails;
 
     if (error || !podcast) return notFound();
- 
 
     return (
       <div className="min-h-screen px-10 text-white pb-12">
@@ -43,11 +43,19 @@ export default async function PodcastDetails({
         </h1>
         <div className="flex flex-col lg:flex-row">
           <div className="flex-1 flex flex-col">
-            <img
-              src={podcast.image_url || "/images/placeholder.png"}
-              alt={podcast.podcast_name || "Podcast cover"}
-              className="mb-4 w-64 h-64 rounded-xl object-cover shadow-lg"
-            />
+            <div className="relative lg:w-96 w-full h-96 lg:h-72 shadow-lg rounded-xl overflow-hidden">
+              <Image
+                src={
+                  podcast.image_url && podcast.image_url.trim() !== ""
+                    ? podcast.image_url
+                    : "/images/1.jpeg"
+                }
+                alt={podcast.podcast_name || "Podcast cover"}
+                unoptimized
+                fill
+                objectFit="cover"
+              />
+            </div>
           </div>
           <div className="flex-1">
             <div className="flex justify-end gap-5 text-sm items-center mt-3">
@@ -55,17 +63,26 @@ export default async function PodcastDetails({
                 {podcast.play_count || 0} <HeadphonesIcon />
               </span>
               {podcast.users && (
-                <LikeButton podcastId={id} userId={podcast.user_id}  />
+                <LikeButton podcastId={id} userId={podcast.user_id} />
               )}
             </div>
             <Link
               href={`/profile/${podcast.user_id}`}
               className="flex items-center gap-3 my-5">
-              <img
-                src={podcast.users?.avatar_url || "/images/1.jpeg"}
-                alt="User Avatar"
-                className="w-11 h-11 rounded-full"
-              />
+              <div className="relative size-14 overflow-hidden shadow-lg rounded-full">
+                <Image
+                  src={
+                    podcast.users.avatar_url &&
+                    podcast.users.avatar_url.trim() !== ""
+                      ? podcast.users.avatar_url
+                      : "/images/1.jpeg"
+                  }
+                  alt="User Avatar"
+                  unoptimized
+                  fill
+                />
+              </div>
+
               <span className="text-white">By {podcast.users?.username}</span>
             </Link>
             <PlayPodcastButton podcast={podcast} />

@@ -13,7 +13,7 @@ const SidebarLinks = () => {
         <Link
           key={href}
           href={href}
-          className={`flex items-center gap-4 px-4 py-2 rounded-lg transition-colors ${
+          className={`flex items-center gap-4 px-3 py-2 rounded-lg transition-colors ${
             pathname === href
               ? "bg-purple-600 text-white"
               : "text-[#EDEDED] hover:text-purple-300"
