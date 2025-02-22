@@ -11,14 +11,13 @@ import { notFound } from "next/navigation";
 import { Podcast } from "@/app/types";
 
 import Image from "next/image";
-import LoaderSpinner from "../../loading";
 
 export default async function PodcastDetails({
   params,
 }: {
   params: { id: string };
 }) {
-  const { id } = await params;
+  const { id } = params;
   if (!id) return notFound();
 
   try {

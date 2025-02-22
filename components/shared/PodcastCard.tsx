@@ -23,7 +23,12 @@ const PodcastCard: FC<PodcastCardProps> = ({ podcast }) => {
       </div>
 
       <div className="p-3">
-        <p className="text-lg font-semibold">{podcast.podcast_name}</p>
+        <p className="text-lg font-semibold">
+          {" "}
+          {podcast.podcast_name.length > 30
+            ? podcast.podcast_name.substring(0, 30) + "..."
+            : podcast.podcast_name}
+        </p>
         <p className="text-sm text-gray-300 h-12">
           {podcast.description.length > 100
             ? podcast.description.substring(0, 100) + "..."
