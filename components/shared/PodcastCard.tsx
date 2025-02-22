@@ -24,7 +24,7 @@ const PodcastCard: FC<PodcastCardProps> = ({ podcast }) => {
       </div>
 
       <div className="p-3">
-        <p className="text-lg font-semibold">
+        <p className="font-semibold mb-2">
           {" "}
           {podcast.podcast_name.length > 30
             ? podcast.podcast_name.substring(0, 30) + "..."
@@ -36,7 +36,7 @@ const PodcastCard: FC<PodcastCardProps> = ({ podcast }) => {
             : podcast.description}
         </p>
       </div>
-      <div className="flex justify-between gap-5 text-sm items-center mt-3 p-3">
+      <div className="flex justify-between gap-5 text-xs items-center  p-3">
         <p className="text-xs font-bold text-gray-400">
           Created
           {podcast.created_at
