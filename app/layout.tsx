@@ -20,8 +20,10 @@ export default function BasicLayout({
 }>) {
   
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${montserrat.variable} ${dancingScript.variable}`}>
+    <html lang="en">
+      <body
+        className={`${montserrat.variable} ${dancingScript.variable}`}
+        suppressHydrationWarning={true}>
         <AudioProvider>
           <div className="flex bg-gradient-to-b from-black via-purple-950 to-purple-700">
             {children}

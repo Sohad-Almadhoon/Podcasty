@@ -10,7 +10,7 @@ const LoginPage = async () => {
   }
 
   return (
-    <div className="min-h-screen border w-full flex items-center justify-center mx-auto bg-gradient-to-b from-black via-purple-950 to-purple-700">
+    <div suppressHydrationWarning className="min-h-screen border w-full flex items-center justify-center mx-auto bg-gradient-to-b from-black via-purple-950 to-purple-700">
       <LoginButton />
     </div>
   );

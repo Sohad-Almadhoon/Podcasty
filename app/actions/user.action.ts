@@ -18,7 +18,7 @@ export async function fetchUserById(id: string) {
             throw new Error('User not found');
         }
 
-        return { data };  // Returning user data
+        return { data };  
     } catch (err) {
         console.error("Error fetching user by ID:", err);
         throw new Error((err as Error).message);

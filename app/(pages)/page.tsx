@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getUser } from "../lib/supabase";
-import LoaderSpinner from "./podcasts/loading";
 import Image from "next/image";
+import LoaderSpinner from "./loading";
 
 export default async function Home() {
 const user = await getUser();

@@ -9,8 +9,9 @@ import {
 } from "@/app/actions/podcast.action";
 import { notFound } from "next/navigation";
 import { Podcast } from "@/app/types";
-import LoaderSpinner from "../loading";
+
 import Image from "next/image";
+import LoaderSpinner from "../../loading";
 
 export default async function PodcastDetails({
   params,

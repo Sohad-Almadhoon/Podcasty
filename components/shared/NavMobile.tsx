@@ -30,7 +30,7 @@ const MobileNav = async () => {
             <div className="flex gap-8 flex-col">
               <SidebarLinks />
               {user ? (
-                <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-8 ml-5">
                   <Link
                     href={`/profile/${user.id}`}
                     className="text-[#EDEDED] hover:text-purple-300 flex items-center gap-4">

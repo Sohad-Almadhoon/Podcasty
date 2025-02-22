@@ -6,8 +6,8 @@ import {
 import PodcastCard from "@/components/shared/PodcastCard";
 import DeleteButton from "@/components/buttons/DeleteButton";
 import { getUser } from "@/app/lib/supabase";
-import LoaderSpinner from "./loading";
 import Image from "next/image";
+import LoaderSpinner from "../../loading";
 
 const Profile = async ({ params }: { params: { id: string } }) => {
   const { id } = params;

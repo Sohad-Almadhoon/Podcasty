@@ -7,7 +7,6 @@ interface PodcastResponse {
     podcasts?: Podcast[] | [];
     error?: string;
 }
-
 export async function getPodcastDetails(id: string): Promise<PodcastResponse> {
     try {
         const supabaseClient = await getSupabaseAuth();
@@ -122,32 +121,3 @@ export const getLikes = async (podcastId: string, userId: string) => {
         return { count: 0, liked: false, error: error.message || "Unknown error" };
     }
 };
-
-
-
-export async function getPodcasts(query?: string): Promise<Podcast[]> {
-
-    try {
-        const supabase = await getSupabaseAuth();
-        const { data, error } = await supabase.from("podcasts").select(`
-               id,
-                podcast_name,
-                description,
-                image_url,
-                audio_url,
-                play_count,
-                ai_voice,
-                user_id,    
-                users:user_id (username, avatar_url),
-                likes(podcast_id)
-            `).ilike("podcast_name", `${query}`);
-        if (error) {
-            throw new Error(error.message);
-        }
-        return data;
-        // i wanna try return simple object and add user server directive
-    } catch (error) {
-        console.error("Error fetching podcasts:", error);
-        return [];
-    }
-}
