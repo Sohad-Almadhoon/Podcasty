@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
             user_id,    
             users:user_id (username, avatar_url),
             likes(podcast_id)
-        `).ilike("podcast_name", `%${query}%`);
+        `);
 
         if (error) {
             return NextResponse.json({ error: error.message }, { status: 500 });
