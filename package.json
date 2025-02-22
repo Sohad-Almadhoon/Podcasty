@@ -29,6 +29,7 @@
     "react-loader-spinner": "^6.1.6",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
+    "uninstall": "^0.0.0",
     "uuid": "^11.0.5",
     "zod": "^3.24.1"
   },

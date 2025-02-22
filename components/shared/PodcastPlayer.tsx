@@ -96,9 +96,12 @@ const PodcastPlayer = () => {
 
   return (
     <div
-      className={cn("sticky bottom-0 left-0 flex size-full flex-col", {
-        hidden: !audio?.audioUrl || audio?.audioUrl === "",
-      })}>
+      className={cn(
+        "sticky bottom-0 left-0 flex flex-col bg-white backdrop-blur-lg ",
+        {
+          hidden: !audio?.audioUrl || audio?.audioUrl === "",
+        }
+      )}>
       <Progress
         value={(currentTime / duration) * 100}
         className="w-full"
@@ -125,7 +128,7 @@ const PodcastPlayer = () => {
                 fill
               />
             </div>
-          </Link> 
+          </Link>
           <div className="flex w-[160px] flex-col">
             <h2 className="text-14 truncate font-semibold text-white-1">
               {audio?.title}

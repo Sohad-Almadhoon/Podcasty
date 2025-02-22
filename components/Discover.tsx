@@ -31,10 +31,10 @@ const Discover = () => {
       setLoading(true);
       try {
         const url = debouncedSearch
-          ? `http://localhost:3000/api/podcasts?query=${encodeURIComponent(
+          ? `NEXT_PUBLIC_BASE_URL/api/podcasts?query=${encodeURIComponent(
               debouncedSearch
             )}`
-          : "http://localhost:3000/api/podcasts";
+          : "NEXT_PUBLIC_BASE_URL/api/podcasts";
 
         const response = await fetch(url);
         const data = await response.json();
