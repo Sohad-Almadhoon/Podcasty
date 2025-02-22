@@ -11,12 +11,13 @@ import { notFound } from "next/navigation";
 import { Podcast } from "@/app/types";
 
 import Image from "next/image";
+import LoaderSpinner from "../../loading";
 
-export default async function PodcastDetails({
+const PodcastDetails = async({
   params,
 }: {
   params: { id: string };
-}) {
+}) => {
   const { id } = params;
   if (!id) return notFound();
 
@@ -122,3 +123,4 @@ export default async function PodcastDetails({
     return notFound();
   }
 }
+export default PodcastDetails;
