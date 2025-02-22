@@ -34,8 +34,9 @@ const Profile = async (props: { params: paramsType }) => {
       </div>
 
       <h2 className="text-xl font-semibold my-5">Your Podcasts</h2>
+
       {podcasts?.length > 0 ? (
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <ul className="grid lg:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-5">
           {podcasts.map((podcast) => (
             <div key={podcast.id} className="p-4 rounded-lg relative">
               <Link href={`/podcasts/${podcast.id}`}>
