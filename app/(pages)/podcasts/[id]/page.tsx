@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { HeadphonesIcon } from "lucide-react";
 import LikeButton from "@/components/buttons/LikeButton";
 import PodcastCard from "@/components/shared/PodcastCard";
 import PlayPodcastButton from "@/components/buttons/PlayPodcastButton";
@@ -12,6 +11,7 @@ import { paramsType, Podcast } from "@/app/types";
 
 import Image from "next/image";
 import LoaderSpinner from "../../loading";
+import { BsHeadphones } from "react-icons/bs";
 
 const PodcastDetails = async (props: { params: paramsType }) => {
   const { id } = await props.params;
@@ -40,7 +40,7 @@ const PodcastDetails = async (props: { params: paramsType }) => {
         </h1>
         <div className="flex flex-col lg:flex-row">
           <div className="flex-1 flex flex-col">
-            <div className="relative lg:w-96 w-full h-96 lg:h-72 shadow-lg rounded-xl overflow-hidden">
+            <div className="relative lg:w-72 w-full h-96 lg:h-72 shadow-lg rounded-xl overflow-hidden">
               <Image
                 src={
                   podcast.image_url && podcast.image_url.trim() !== ""
@@ -57,7 +57,7 @@ const PodcastDetails = async (props: { params: paramsType }) => {
           <div className="flex-1">
             <div className="flex justify-end gap-5 text-sm items-center mt-3">
               <span className="flex gap-1 items-center">
-                {podcast.play_count || 0} <HeadphonesIcon />
+                {podcast.play_count || 0} <BsHeadphones className="text-xl" />
               </span>
               {podcast.users && (
                 <LikeButton podcastId={id} userId={podcast.user_id} />

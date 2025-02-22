@@ -1,7 +1,8 @@
 import { Podcast } from "@/app/types";
 import Image from "next/image";
 import React, { FC } from "react";
-import { BsHeartFill, BsPlayCircleFill } from "react-icons/bs";
+import { BsHeartFill, BsHeadphones } from "react-icons/bs";
+
 interface PodcastCardProps {
   podcast: Podcast;
 }
@@ -39,12 +40,12 @@ const PodcastCard: FC<PodcastCardProps> = ({ podcast }) => {
         <p className="text-xs font-bold text-gray-400">
           Created
           {podcast.created_at
-            ? `At ${new Date(podcast.created_at).toLocaleDateString()}`
-            : `By ${podcast.users.username}`}
+            ? ` At ${new Date(podcast.created_at).toLocaleDateString()}`
+            : ` By ${podcast.users.username}`}
         </p>
         <div className="flex gap-3 items-center">
           <span className="flex gap-1 items-center">
-            {podcast.play_count} <BsPlayCircleFill className="text-base" />
+            {podcast.play_count} <BsHeadphones className="text-xl" />
           </span>
           <span className="flex gap-1 items-center">
             {podcast.likes.length} <BsHeartFill />
