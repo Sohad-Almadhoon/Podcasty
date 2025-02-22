@@ -37,7 +37,10 @@ const PodcastCard: FC<PodcastCardProps> = ({ podcast }) => {
       </div>
       <div className="flex justify-between gap-5 text-sm items-center mt-3 p-3">
         <p className="text-xs font-bold text-gray-400">
-          By {podcast.users?.username}
+          Created
+          {podcast.created_at
+            ? `At ${new Date(podcast.created_at).toLocaleDateString()}`
+            : `By ${podcast.users.username}`}
         </p>
         <div className="flex gap-3 items-center">
           <span className="flex gap-1 items-center">

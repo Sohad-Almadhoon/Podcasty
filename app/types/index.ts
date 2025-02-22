@@ -20,6 +20,7 @@ export interface Podcast {
   ai_voice: AiVoice;
   user_id: string;
   audio_url: string;
+  created_at?: string;
   likes: { podcast_id: string }[];
   users: {
     username: string;
@@ -31,3 +32,4 @@ export interface Podcast {
 }
 
 export type AiVoice = "alloy" | "ash" | "coral" | "echo" | "fable" | "onyx" | "nova" | "sage" | "shimmer";
+export type paramsType = Promise<{ id: string }>;

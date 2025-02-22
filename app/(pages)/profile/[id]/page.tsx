@@ -8,9 +8,10 @@ import DeleteButton from "@/components/buttons/DeleteButton";
 import { getUser } from "@/app/lib/supabase";
 import Image from "next/image";
 import LoaderSpinner from "../../loading";
+import { paramsType } from "@/app/types";
 
-const Profile = async ({ params }: { params: { id: string } }) => {
-  const { id } = params;
+const Profile = async (props: { params: paramsType }) => {
+    const { id } = await props.params;
   const { data: user } = await fetchUserById(id);
   const podcasts = await fetchPodcastsByUserId(id);
   if (!podcasts) return <LoaderSpinner />;

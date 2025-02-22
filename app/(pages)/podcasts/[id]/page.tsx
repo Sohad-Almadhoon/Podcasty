@@ -8,17 +8,13 @@ import {
   getPodcastDetails,
 } from "@/app/actions/podcast.action";
 import { notFound } from "next/navigation";
-import { Podcast } from "@/app/types";
+import { paramsType, Podcast } from "@/app/types";
 
 import Image from "next/image";
 import LoaderSpinner from "../../loading";
 
-const PodcastDetails = async({
-  params,
-}: {
-  params: { id: string };
-}) => {
-  const { id } = params;
+const PodcastDetails = async (props: { params: paramsType }) => {
+  const { id } = await props.params;
   if (!id) return notFound();
 
   try {
@@ -96,6 +92,19 @@ const PodcastDetails = async({
           </div>
         </div>
         <div className="mt-5">
+          <div className="flex justify-end">
+            <div className="bg-gray-900 flex flex-col text-white px-4 py-2 rounded-lg text-sm w-max shadow-md">
+              <span className="block text-gray-400 text-xs">Created At</span>
+              <span className="font-semibold">
+                {podcast.created_at
+                  ? new Intl.DateTimeFormat("en-US", {
+                      dateStyle: "long",
+                    }).format(new Date(podcast.created_at))
+                  : "Unknown date"}
+              </span>
+            </div>
+          </div>
+
           <h2 className="text-2xl">Transcription</h2>
           <p className="text-sm mt-4 text-gray-300">
             {podcast.description || "No description available."}
@@ -122,5 +131,5 @@ const PodcastDetails = async({
     console.error("Error fetching podcast details or other podcasts:", error);
     return notFound();
   }
-}
+};
 export default PodcastDetails;

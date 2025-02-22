@@ -21,7 +21,8 @@ export async function getPodcastDetails(id: string): Promise<PodcastResponse> {
                 audio_url,
                 play_count,
                 ai_voice,
-                user_id,    
+                user_id, 
+                created_at,    
                 users:user_id (username, avatar_url),
                 likes(podcast_id)
             `)
